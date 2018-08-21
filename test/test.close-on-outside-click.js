@@ -15,10 +15,13 @@ describe('ctrly(closeOnOutsideClick)', () => {
     afterEach(() => {
         if (ctrlyInstance) {
             ctrlyInstance.destroy();
+            ctrlyInstance = null;
         }
 
-        fixture.destroy();
-        fixture = null;
+        if (fixture) {
+            fixture.destroy();
+            fixture = null;
+        }
     });
 
     it('closes target on outside click by default', done => {

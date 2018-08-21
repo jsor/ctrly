@@ -15,10 +15,13 @@ describe('ctrly(context)', () => {
     afterEach(() => {
         if (ctrlyInstance) {
             ctrlyInstance.destroy();
+            ctrlyInstance = null;
         }
 
-        fixture.destroy();
-        fixture = null;
+        if (fixture) {
+            fixture.destroy();
+            fixture = null;
+        }
     });
 
     it('handles target inside context', done => {

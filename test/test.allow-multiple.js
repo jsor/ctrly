@@ -15,10 +15,13 @@ describe('ctrly(allowMultiple)', () => {
     afterEach(() => {
         if (ctrlyInstance) {
             ctrlyInstance.destroy();
+            ctrlyInstance = null;
         }
 
-        fixture.destroy();
-        fixture = null;
+        if (fixture) {
+            fixture.destroy();
+            fixture = null;
+        }
     });
 
     it('allows multiple when configured', done => {

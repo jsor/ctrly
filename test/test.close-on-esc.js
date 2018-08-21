@@ -15,10 +15,13 @@ describe('ctrly(closeOnEsc)', () => {
     afterEach(() => {
         if (ctrlyInstance) {
             ctrlyInstance.destroy();
+            ctrlyInstance = null;
         }
 
-        fixture.destroy();
-        fixture = null;
+        if (fixture) {
+            fixture.destroy();
+            fixture = null;
+        }
     });
 
     it('closes target on ESC by default', done => {

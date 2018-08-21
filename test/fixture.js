@@ -1,19 +1,6 @@
 import {render} from 'domestique';
 
 export function fixture(html) {
-    function destroy(el) {
-        el.parentNode.removeChild(el);
-        document.body.scrollTop = 0;
-        document.body.scrollLeft = 0;
-        document.body.focus();
-    }
-
-    const previous = document.getElementById('ctrly-fixture');
-
-    if (previous) {
-        destroy(previous);
-    }
-
     const refs = render(`<div id="ctrly-fixture" ref="root">${html}</div>`);
 
     document.body.appendChild(refs.root);
@@ -21,7 +8,15 @@ export function fixture(html) {
     return {
         refs,
         destroy: () => {
-            destroy(refs.root);
+            document.body.removeChild(refs.root);
+
+            refs.root.textContent = '';
+            delete refs.root;
+
+            document.body.scrollTop = 0;
+            document.body.scrollLeft = 0;
+
+            document.body.focus();
         }
     };
 }

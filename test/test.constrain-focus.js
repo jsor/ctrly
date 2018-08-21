@@ -34,10 +34,13 @@ describe('ctrly(constrainFocus)', () => {
     afterEach(() => {
         if (ctrlyInstance) {
             ctrlyInstance.destroy();
+            ctrlyInstance = null;
         }
 
-        fixture.destroy();
-        fixture = null;
+        if (fixture) {
+            fixture.destroy();
+            fixture = null;
+        }
     });
 
     it('does not constrain focus by default', done => {
