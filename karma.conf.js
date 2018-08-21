@@ -66,6 +66,8 @@ module.exports = function(config) {
 
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: Infinity
+        // Try to workaround the "Some of your tests did a full page reload!" error
+        // by setting concurrency: 1 on TravisCI
+        concurrency: env.CI === 'true' ? 1 : Infinity
     })
 };
