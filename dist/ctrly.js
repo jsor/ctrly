@@ -264,10 +264,7 @@
     }
     function findTarget(control) {
       var targetId = control.getAttribute('aria-controls');
-      return {
-        targetId: targetId,
-        target: targetId ? document.getElementById(targetId) : null
-      };
+      return document.getElementById(targetId);
     }
     function ctrly() {
       var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -294,24 +291,8 @@
       }
       function close(control) {
         var returnFocus = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        var _findTarget = findTarget(control),
-            targetId = _findTarget.targetId,
-            target = _findTarget.target;
-        if (!targetId) {
-          control.setAttribute('aria-expanded', 'false');
-          return false;
-        }
-        function reset() {
-          if (removers[targetId]) {
-            removers[targetId]();
-            delete removers[targetId];
-          }
-          find("[aria-controls=\"".concat(targetId, "\"]")).forEach(function (c) {
-            c.setAttribute('aria-expanded', 'false');
-          });
-        }
+        var target = findTarget(control);
         if (!target) {
-          reset();
           return false;
         }
         if (!target.hasAttribute('data-ctrly-opened')) {
@@ -320,8 +301,14 @@
         if (!trigger(target, 'close')) {
           return false;
         }
-        reset();
         var currentActiveElement = activeElement();
+        if (removers[target.id]) {
+          removers[target.id]();
+          delete removers[target.id];
+        }
+        find("[aria-controls=\"".concat(target.id, "\"]")).forEach(function (c) {
+          c.setAttribute('aria-expanded', 'false');
+        });
         target.removeAttribute('data-ctrly-opened');
         target.setAttribute('aria-hidden', 'true');
         target.removeAttribute('tabindex');
@@ -409,11 +396,8 @@
         };
       }
       function open(control) {
-        var _findTarget2 = findTarget(control),
-            targetId = _findTarget2.targetId,
-            target = _findTarget2.target;
+        var target = findTarget(control);
         if (!target) {
-          control.setAttribute('aria-expanded', 'false');
           return false;
         }
         if (target.hasAttribute('data-ctrly-opened')) {
@@ -422,8 +406,8 @@
         if (!trigger(target, 'open')) {
           return false;
         }
-        removers[targetId] = addEventListeners(control, target);
-        find("[aria-controls=\"".concat(targetId, "\"]")).forEach(function (c) {
+        removers[target.id] = addEventListeners(control, target);
+        find("[aria-controls=\"".concat(target.id, "\"]")).forEach(function (c) {
           c.setAttribute('aria-expanded', 'true');
         });
         target.setAttribute('data-ctrly-opened', '');
@@ -466,8 +450,7 @@
               return;
             }
             control.setAttribute('aria-expanded', 'false');
-            var _findTarget3 = findTarget(control),
-                target = _findTarget3.target;
+            var target = findTarget(control);
             if (target) {
               target.setAttribute('aria-hidden', 'true');
             }

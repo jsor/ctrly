@@ -415,7 +415,7 @@ describe('ctrly()', () => {
         });
     });
 
-    it('sets aria-expanded="false" on invalid expanded aria-controls', done => {
+    it('does nothing on invalid expanded aria-controls', done => {
         fixture = fixtureInvalidAriaControlsExpanded();
 
         const {control} = fixture.refs;
@@ -425,11 +425,11 @@ describe('ctrly()', () => {
         ctrlyInstance = ctrly();
 
         ready(() => {
-            assert.equal(control.getAttribute('aria-expanded'), 'false');
+            assert.equal(control.getAttribute('aria-expanded'), 'true');
 
             simulant.fire(control, 'click', {which: 1, button: 0});
 
-            assert.equal(control.getAttribute('aria-expanded'), 'false');
+            assert.equal(control.getAttribute('aria-expanded'), 'true');
 
             done();
         });
@@ -453,7 +453,7 @@ describe('ctrly()', () => {
         });
     });
 
-    it('sets aria-expanded="false" on missing expanded aria-controls', done => {
+    it('does nothing on missing expanded aria-controls', done => {
         fixture = fixtureMissingAriaControlsExpanded();
 
         const {control} = fixture.refs;
@@ -463,11 +463,11 @@ describe('ctrly()', () => {
         ctrlyInstance = ctrly();
 
         ready(() => {
-            assert.equal(control.getAttribute('aria-expanded'), 'false');
+            assert.equal(control.getAttribute('aria-expanded'), 'true');
 
             simulant.fire(control, 'click', {which: 1, button: 0});
 
-            assert.equal(control.getAttribute('aria-expanded'), 'false');
+            assert.equal(control.getAttribute('aria-expanded'), 'true');
 
             done();
         });

@@ -49,7 +49,7 @@ function keyCode(e) {
 function findTarget(control) {
     const targetId = control.getAttribute('aria-controls');
 
-    return {targetId, target: targetId ? document.getElementById(targetId) : null};
+    return document.getElementById(targetId);
 }
 
 export default function ctrly(opts = {}) {
@@ -82,26 +82,9 @@ export default function ctrly(opts = {}) {
     }
 
     function close(control, returnFocus = true) {
-        const {targetId, target} = findTarget(control);
-
-        if (!targetId) {
-            control.setAttribute('aria-expanded', 'false');
-            return false;
-        }
-
-        function reset() {
-            if (removers[targetId]) {
-                removers[targetId]();
-                delete removers[targetId];
-            }
-
-            find(`[aria-controls="${targetId}"]`).forEach(c => {
-                c.setAttribute('aria-expanded', 'false');
-            });
-        }
+        const target = findTarget(control);
 
         if (!target) {
-            reset();
             return false;
         }
 
@@ -113,10 +96,17 @@ export default function ctrly(opts = {}) {
             return false;
         }
 
-        reset();
-
         // Store reference before we call target.blur()
         const currentActiveElement = activeElement();
+
+        if (removers[target.id]) {
+            removers[target.id]();
+            delete removers[target.id];
+        }
+
+        find(`[aria-controls="${target.id}"]`).forEach(c => {
+            c.setAttribute('aria-expanded', 'false');
+        });
 
         target.removeAttribute('data-ctrly-opened');
 
@@ -248,10 +238,9 @@ export default function ctrly(opts = {}) {
     }
 
     function open(control) {
-        const {targetId, target} = findTarget(control);
+        const target = findTarget(control);
 
         if (!target) {
-            control.setAttribute('aria-expanded', 'false');
             return false;
         }
 
@@ -263,9 +252,9 @@ export default function ctrly(opts = {}) {
             return false;
         }
 
-        removers[targetId] = addEventListeners(control, target);
+        removers[target.id] = addEventListeners(control, target);
 
-        find(`[aria-controls="${targetId}"]`).forEach(c => {
+        find(`[aria-controls="${target.id}"]`).forEach(c => {
             c.setAttribute('aria-expanded', 'true');
         });
 
@@ -327,7 +316,7 @@ export default function ctrly(opts = {}) {
 
                 control.setAttribute('aria-expanded', 'false');
 
-                const {target} = findTarget(control);
+                const target = findTarget(control);
 
                 if (target) {
                     target.setAttribute('aria-hidden', 'true');
