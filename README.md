@@ -446,7 +446,7 @@ ctrly({
 
 // or
 
-document.getElementById('my-closed').addEventListener('ctrly:closed', e => {
+document.getElementById('my-target').addEventListener('ctrly:closed', e => {
     const target = e.target;
 
     target.classList.remove('is-closing');
