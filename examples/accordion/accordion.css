@@ -1,0 +1,68 @@
+.accordion {
+    border: 1px solid hsl(0, 0%, 82%);
+    border-radius: .3em;
+    box-shadow: 0 1px 2px hsl(0, 0%, 82%);
+}
+
+.accordion > * + * {
+    border-top: 1px solid hsl(0, 0%, 82%);
+}
+
+.accordion-control {
+    color: hsl(0, 0%, 13%);
+    display: block;
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0;
+    padding: 1em 1.5em;
+    position: relative;
+    width: 100%;
+}
+
+.accordion dt:first-child .accordion-control {
+    border-radius: .3em .3em 0 0;
+}
+
+.accordion-control[aria-expanded="true"],
+.accordion-control:focus,
+.accordion-control:hover {
+    background: hsl(0, 0%, 93%);
+}
+
+.accordion-control-icon {
+    border: solid hsl(0, 0%, 62%);
+    border-width: 0 2px 2px 0;
+    height: .5rem;
+    pointer-events: none;
+    position: absolute;
+    right: 1.5em;
+    top: 50%;
+    transform: translateY(-60%) rotate(45deg);
+    width: .5rem;
+}
+
+.accordion-control:focus .accordion-control-icon,
+.accordion-control:hover .accordion-control-icon {
+    border-color: hsl(0, 0%, 13%);
+}
+
+.accordion-control[aria-expanded="true"] .accordion-control-icon {
+    transform: translateY(-50%) rotate(-135deg);
+}
+
+.accordion-target {
+    margin: 0;
+    overflow: hidden;
+    transition: cubic-bezier(.23, 1, .32, 1) .35s;
+    transition-property: max-height, visibility;
+    visibility: visible;
+}
+
+.accordion-target[aria-hidden="true"] {
+    max-height: 0;
+    visibility: hidden;
+}
+
+.accordion-target-inner {
+    padding: 1em 1.5em;
+}

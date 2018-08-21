@@ -1,0 +1,127 @@
+body {
+    color: black;
+    background: white;
+    font-family: sans-serif;
+    line-height: 1.5;
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+}
+
+h1, h2, h3, h4, h5, h6, dt {
+    font: 1rem sans-serif;
+    font-family: inherit;
+    line-height: 1.2;
+}
+
+h2, h3, h4, h5, h6 {
+    margin-top: 3rem;
+}
+
+h1, h2, h3 {
+    color: #005A9C;
+    background: transparent;
+}
+
+h1 {
+    font-size: 1.7rem;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+h4 {
+    font-weight: bold;
+}
+
+h5 {
+    font-style: italic;
+}
+
+h6 {
+    font-variant: small-caps;
+}
+
+p {
+    margin: 1rem 0;
+}
+
+dd > p:first-child,
+li > p:first-child {
+    margin-top: 0;
+}
+
+ul, ol {
+    margin-left: 0;
+    padding-left: 2rem;
+}
+
+li {
+    margin: .25rem 0 .5rem;
+    padding: 0;
+}
+
+dl dd {
+    margin: 0 0 .5rem 2rem;
+}
+
+pre, code, samp {
+    font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
+    font-size: .9em;
+    hyphens: none;
+    text-transform: none;
+}
+
+pre code,
+code code {
+    font-size: 1rem;
+}
+
+pre {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    overflow: auto;
+}
+
+a[href] {
+    border-bottom: 1px solid #707070;
+    color: #034575;
+    margin: 0 -1px 0;
+    padding: 0 1px 0;
+    text-decoration: none;
+}
+
+a:visited {
+    border-bottom-color: #BBB;
+}
+
+a[href]:focus,
+a[href]:hover {
+    background: #f8f8f8;
+    background: rgba(75%, 75%, 75%, .25);
+    margin-bottom: -2px;
+}
+
+a[href]:active {
+    border-color: #C00;
+    color: #C00;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    border: 1px solid hsl(0, 0%, 62%);
+    border-radius: .3em;
+    display: block;
+    font-size: inherit;
+    padding: .3em .5em;
+}

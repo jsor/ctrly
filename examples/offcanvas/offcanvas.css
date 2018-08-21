@@ -1,0 +1,56 @@
+.offcanvas-control {
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    padding: .5rem .75rem;
+}
+
+.offcanvas-control-icon {
+    margin-right: .5rem;
+    font-size: 1.25rem;
+}
+
+.offcanvas-target {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 300px;
+    height: 100%;
+    z-index: 1000;
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(105%, 0, 0);
+    transition: .35s cubic-bezier(.23, 1, .32, 1);
+    transition-property: transform;
+
+    background: #eee;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .33);
+}
+
+.offcanvas-target[aria-hidden="false"] {
+    transform: translate3D(0, 0, 0);
+}
+
+.offcanvas-target-content {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 20px;
+}
+
+.offcanvas-close {
+    align-items: center;
+    display: flex;
+    font-size: 2rem;
+    height: 48px;
+    justify-content: center;
+    line-height: 32px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 48px;
+    z-index: 1001;
+}

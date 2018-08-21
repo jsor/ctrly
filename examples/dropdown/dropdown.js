@@ -1,0 +1,3 @@
+ctrly({
+    selector: '.dropdown-control'
+});

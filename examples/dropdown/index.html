@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Dropdown Example</title>
+
+    <link rel="stylesheet" href="../_example.css">
+    <link rel="stylesheet" href="../_utilities.css">
+
+    <link rel="stylesheet" href="dropdown.css">
+
+    <script src="../../dist/ctrly.js"></script>
+
+    <script src="dropdown.js"></script>
+</head>
+<body>
+
+<h1>Dropdown Example</h1>
+
+<div class="dropdown">
+    <button
+        class="button-reset dropdown-control"
+        aria-controls="dropdown-target"
+    >
+        Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
+    </button>
+
+    <section
+        id="dropdown-target"
+        class="dropdown-target"
+        aria-hidden="true"
+    >
+        <ul>
+            <li>
+                <a href="https://google.com">google.com</a>
+            </li>
+            <li>
+                <a href="https://bing.com">bing.com</a>
+            </li>
+        </ul>
+    </section>
+</div>
+
+<div class="dropdown">
+    <button
+        class="button-reset dropdown-control"
+        aria-expanded="true"
+        aria-controls="dropdown-target-expanded"
+    >
+        Expanded Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
+    </button>
+
+    <section
+        class="dropdown-target"
+        id="dropdown-target-expanded"
+    >
+        <ul>
+            <li>
+                <a href="https://google.com">google.com</a>
+            </li>
+            <li>
+                <a href="https://bing.com">bing.com</a>
+            </li>
+        </ul>
+    </section>
+</div>
+
+</body>
+</html>

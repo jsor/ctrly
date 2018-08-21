@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Offcanvas Example</title>
+
+    <link rel="stylesheet" href="../_example.css">
+    <link rel="stylesheet" href="../_utilities.css">
+
+    <link rel="stylesheet" href="offcanvas.css">
+
+    <style>
+        body {
+            /* Force scrollbars to demonstrate closeOnScroll */
+            height: 3000px;
+        }
+    </style>
+
+    <script src="../../dist/ctrly.js"></script>
+
+    <script src="offcanvas.js"></script>
+</head>
+<body>
+
+<h1>Offcanvas Example</h1>
+
+<button
+    class="button-reset offcanvas-control js-offcanvas-control"
+    aria-expanded="false"
+    aria-controls="offcanvas-target"
+>
+    <span class="offcanvas-control-icon" aria-hidden="true">☰</span> Menu
+</button>
+
+<section
+    id="offcanvas-target"
+    class="offcanvas-target"
+>
+    <div class="offcanvas-target-content">
+        <h1>Navigation</h1>
+        <nav>
+            <ul>
+                <li>
+                    <a href="https://google.com">google.com</a>
+                </li>
+                <li>
+                    <a href="https://bing.com">bing.com</a>
+                </li>
+            </ul>
+        </nav>
+
+        <section>
+            <h1>Text</h1>
+
+            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>
+        </section>
+    </div>
+
+    <button
+            class="button-reset offcanvas-close js-offcanvas-control"
+            aria-expanded="false"
+            aria-controls="offcanvas-target"
+            aria-label="Close (Press escape to close)"
+    >
+        <span class="offcanvas-close-icon" aria-hidden="true">×</span>
+        <span class="screenreader-only">Close Menu</span>
+    </button>
+</section>
+
+</body>
+</html>
