@@ -338,7 +338,8 @@ export default function ctrly(opts = {}) {
         // Iterate leftover removers
         for (const id in removers) {
             if (Object.prototype.hasOwnProperty.call(removers, id)) {
-                removers[id].call();
+                removers[id]();
+                delete removers[id];
             }
         }
     }
