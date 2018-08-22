@@ -58,6 +58,14 @@ The control must have a `data-ctrly` attribute and link to it's target through a
 <section id="my-target">You clicked the toggle to make me visible</section>
 ```
 
+> The [specification](https://www.w3.org/TR/wai-aria-1.1/#aria-controls) also
+  allows a
+  [*ID reference list*](https://www.w3.org/TR/wai-aria-1.1/#valuetype_idref_list)
+  (a list of multiple, space-separated ID references) as value of the
+  `arial-controls` attribute.
+  This is **not** supported by ctrly and only a **single** ID reference is
+  allowed.
+
 To initialize all controls, the `ctrly()` function must be called once.
 
 ```js
