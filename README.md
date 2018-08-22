@@ -286,8 +286,8 @@ ctrly({
 
 *Default:* `false`
 
-By default, targets are closed when there is a mouse click outside the target.
-Passing `false` as an option disables this behavior.
+Passing `true` as an option ensures that <kbd>TAB</kbd> and
+<kbd>SHIFT</kbd>+<kbd>TAB</kbd> do not move focus outside the target.
 
 #### Example
 
