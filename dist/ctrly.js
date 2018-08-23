@@ -278,7 +278,7 @@
       var options = settings(opts);
       var controlSelector = options.selector;
       var eventListener = options.on || {};
-      var removers = {};
+      var instances = {};
       function context(control) {
         if (!options.context) {
           return document;
@@ -296,6 +296,15 @@
           cancelable: true
         }) !== false;
       }
+      function findParentTarget(control) {
+        var element = control;
+        while (element) {
+          if (element.id && instances[element.id]) {
+            return element;
+          }
+          element = element.parentElement;
+        }
+      }
       function close(control) {
         var returnFocus = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         var target = findTarget(control);
@@ -310,9 +319,9 @@
           return false;
         }
         var currentActiveElement = activeElement();
-        if (removers[target.id]) {
-          removers[target.id]();
-          delete removers[target.id];
+        if (instances[target.id]) {
+          instances[target.id].destroy();
+          delete instances[target.id];
         }
         findControls(target).forEach(function (c) {
           c.setAttribute('aria-expanded', 'false');
@@ -415,7 +424,9 @@
         if (!trigger(target, 'open')) {
           return false;
         }
-        removers[target.id] = addEventListeners(control, target);
+        instances[target.id] = {
+          destroy: addEventListeners(control, target)
+        };
         findControls(target).forEach(function (c) {
           c.setAttribute('aria-expanded', 'true');
         });
@@ -438,10 +449,14 @@
               }
               return;
             }
+            var target = findTarget(control);
+            if (!target) {
+              target = findParentTarget(control);
+            }
             if (!options.allowMultiple) {
               closeOthers(control);
             }
-            var target = open(control);
+            open(control);
             if (target) {
               e.preventDefault();
               if (options.focusTarget) {
@@ -488,10 +503,10 @@
         find(controlSelector).forEach(function (control) {
           close(control, false);
         });
-        for (var id in removers) {
-          if (Object.prototype.hasOwnProperty.call(removers, id)) {
-            removers[id]();
-            delete removers[id];
+        for (var id in instances) {
+          if (Object.prototype.hasOwnProperty.call(instances, id)) {
+            instances[id].destroy();
+            delete instances[id];
           }
         }
       }

@@ -103,6 +103,46 @@ describe('ctrly()', () => {
         });
     });
 
+    it('closes target if control without target id is inside the target', done => {
+        fixture = fixtureDefault();
+
+        const {control, target, targetClose} = fixture.refs;
+
+        ctrlyInstance = ctrly();
+
+        ready(() => {
+            assertClosed(control, target);
+
+            simulant.fire(control, 'click', {which: 1, button: 0});
+
+            assertOpen(control, target);
+
+            simulant.fire(targetClose, 'click', {which: 1, button: 0});
+
+            assertClosed(control, target);
+
+            done();
+        });
+    });
+
+    it('closes already expanded target if control without target id is inside the target', done => {
+        fixture = fixtureExpanded();
+
+        const {control, target, targetClose} = fixture.refs;
+
+        ctrlyInstance = ctrly();
+
+        ready(() => {
+            assertOpen(control, target);
+
+            simulant.fire(targetClose, 'click', {which: 1, button: 0});
+
+            assertClosed(control, target);
+
+            done();
+        });
+    });
+
     it('close works if target removed from DOM', done => {
         fixture = fixtureExpanded();
 

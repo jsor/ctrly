@@ -69,7 +69,7 @@ export default function ctrly(opts = {}) {
     const controlSelector = options.selector;
     const eventListener = options.on || {};
 
-    const removers = {};
+    const instances = {};
 
     function context(control) {
         if (!options.context) {
@@ -92,6 +92,18 @@ export default function ctrly(opts = {}) {
         }) !== false;
     }
 
+    function findParentTarget(control) {
+        let element = control;
+
+        while (element) {
+            if (element.id && instances[element.id]) {
+                return element;
+            }
+
+            element = element.parentElement;
+        }
+    }
+
     function close(control, returnFocus = true) {
         const target = findTarget(control);
 
@@ -111,9 +123,9 @@ export default function ctrly(opts = {}) {
         // Store reference before we call target.blur()
         const currentActiveElement = activeElement();
 
-        if (removers[target.id]) {
-            removers[target.id]();
-            delete removers[target.id];
+        if (instances[target.id]) {
+            instances[target.id].destroy();
+            delete instances[target.id];
         }
 
         findControls(target).forEach(c => {
@@ -265,7 +277,9 @@ export default function ctrly(opts = {}) {
             return false;
         }
 
-        removers[target.id] = addEventListeners(control, target);
+        instances[target.id] = {
+            destroy: addEventListeners(control, target)
+        };
 
         findControls(target).forEach(c => {
             c.setAttribute('aria-expanded', 'true');
@@ -298,11 +312,19 @@ export default function ctrly(opts = {}) {
                     return;
                 }
 
+                let target = findTarget(control);
+
+                if (!target) {
+                    // Allow controls without a value for data-ctrly
+                    // to close a target if it's a child element
+                    target = findParentTarget(control);
+                }
+
                 if (!options.allowMultiple) {
                     closeOthers(control);
                 }
 
-                const target = open(control);
+                open(control);
 
                 if (target) {
                     e.preventDefault();
@@ -374,10 +396,10 @@ export default function ctrly(opts = {}) {
         });
 
         // Iterate leftover removers
-        for (const id in removers) {
-            if (Object.prototype.hasOwnProperty.call(removers, id)) {
-                removers[id]();
-                delete removers[id];
+        for (const id in instances) {
+            if (Object.prototype.hasOwnProperty.call(instances, id)) {
+                instances[id].destroy();
+                delete instances[id];
             }
         }
     }
