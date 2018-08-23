@@ -5,7 +5,6 @@
     }
 
     ctrly({
-        selector: '.accordion-control',
         context: '.accordion',
         closeOnEsc: false,
         closeOnOutsideClick: false,

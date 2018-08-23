@@ -6,6 +6,7 @@ body {
     max-width: 50rem;
     margin: 0 auto;
     padding: 1.5rem 2rem;
+    overflow-y: scroll;
 }
 
 h1, h2, h3, h4, h5, h6, dt {

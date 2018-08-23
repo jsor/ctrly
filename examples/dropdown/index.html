@@ -18,41 +18,32 @@
 <h1>Dropdown Example</h1>
 
 <div class="dropdown">
+    <section
+            id="dropdown-target"
+            class="dropdown-target"
+    >
+        <ul>
+            <li>
+                <a href="https://google.com">google.com</a>
+            </li>
+            <li>
+                <a href="https://bing.com">bing.com</a>
+            </li>
+        </ul>
+    </section>
+
     <button
         class="button-reset dropdown-control"
-        aria-controls="dropdown-target"
+        data-ctrly="dropdown-target"
     >
         Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
     </button>
-
-    <section
-        id="dropdown-target"
-        class="dropdown-target"
-        aria-hidden="true"
-    >
-        <ul>
-            <li>
-                <a href="https://google.com">google.com</a>
-            </li>
-            <li>
-                <a href="https://bing.com">bing.com</a>
-            </li>
-        </ul>
-    </section>
 </div>
 
 <div class="dropdown">
-    <button
-        class="button-reset dropdown-control"
-        aria-expanded="true"
-        aria-controls="dropdown-target-expanded"
-    >
-        Expanded Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
-    </button>
-
     <section
-        class="dropdown-target"
-        id="dropdown-target-expanded"
+            class="dropdown-target"
+            id="dropdown-target-expanded"
     >
         <ul>
             <li>
@@ -63,6 +54,14 @@
             </li>
         </ul>
     </section>
+
+    <button
+        class="button-reset dropdown-control"
+        data-ctrly="dropdown-target-expanded"
+        data-ctrly-open
+    >
+        Expanded Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
+    </button>
 </div>
 
 </body>

@@ -24,8 +24,8 @@ export function fixture(html) {
 export function fixtureDefault() {
     return fixture(`
 <button ref="focusableBefore">Focusable Before</button>
-<button data-ctrly ref="control" aria-controls="target" aria-expanded="false">Toggle</button>
-<section ref="target" id="target" aria-hidden="true">
+<button ref="control" data-ctrly="target">Toggle</button>
+<section ref="target" id="target">
     <button ref="targetClose" data-ctrly>Close</button>
     Hello!
     <a ref="targetLink" href="#">Link</a>
@@ -36,8 +36,8 @@ export function fixtureDefault() {
 
 export function fixtureExpanded() {
     return fixture(`
-<button data-ctrly ref="control" aria-controls="target" aria-expanded="true">Toggle</button>
-<section ref="target" id="target" aria-hidden="false">
+<button ref="control" data-ctrly="target" data-ctrly-open>Toggle</button>
+<section ref="target" id="target">
     <button ref="targetClose" data-ctrly>Close</button>
     Hello!
     <a ref="targetLink" href="#">Link</a>
@@ -48,16 +48,16 @@ export function fixtureExpanded() {
 export function fixtureMultiple() {
     return fixture(`
 <div class="context">
-    <button data-ctrly ref="control" aria-controls="target">Toggle</button>
-    <section ref="target" id="target" aria-hidden="false">
+    <button ref="control" data-ctrly="target">Toggle</button>
+    <section ref="target" id="target">
         <button ref="targetClose" data-ctrly>Close</button>
         Hello!
         <a ref="targetLink" href="#">Link</a>
     </section>
 </div>
 <div class="context">
-    <button data-ctrly ref="control2" aria-controls="target2">Toggle</button>
-    <section ref="target2" id="target2" aria-hidden="false">
+    <button ref="control2" data-ctrly="target2">Toggle</button>
+    <section ref="target2" id="target2">
         <button ref="targetClose2" data-ctrly>Close</button>
         Hello!
         <a ref="targetLink2" href="#">Link</a>

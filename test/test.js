@@ -397,77 +397,93 @@ describe('ctrly()', () => {
         });
     });
 
-    it('does nothing on invalid aria-controls', done => {
+    it('removes aria-* attributes on invalid aria-controls', done => {
         fixture = fixtureInvalidAriaControls();
 
         const {control} = fixture.refs;
 
+        assert(control.hasAttribute('aria-controls'));
         assert.equal(control.getAttribute('aria-expanded'), 'false');
 
         ctrlyInstance = ctrly();
 
         ready(() => {
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
+
             simulant.fire(control, 'click', {which: 1, button: 0});
 
-            assert.equal(control.getAttribute('aria-expanded'), 'false');
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
 
             done();
         });
     });
 
-    it('does nothing on invalid expanded aria-controls', done => {
+    it('removes aria-* attributes on invalid expanded aria-controls', done => {
         fixture = fixtureInvalidAriaControlsExpanded();
 
         const {control} = fixture.refs;
 
+        assert(control.hasAttribute('aria-controls'));
         assert.equal(control.getAttribute('aria-expanded'), 'true');
 
         ctrlyInstance = ctrly();
 
         ready(() => {
-            assert.equal(control.getAttribute('aria-expanded'), 'true');
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
 
             simulant.fire(control, 'click', {which: 1, button: 0});
 
-            assert.equal(control.getAttribute('aria-expanded'), 'true');
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
 
             done();
         });
     });
 
-    it('does nothing on missing aria-controls', done => {
+    it('removes aria-* attributes on missing aria-controls', done => {
         fixture = fixtureMissingAriaControls();
 
         const {control} = fixture.refs;
 
+        assert.isFalse(control.hasAttribute('aria-controls'));
         assert.equal(control.getAttribute('aria-expanded'), 'false');
 
         ctrlyInstance = ctrly();
 
         ready(() => {
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
+
             simulant.fire(control, 'click', {which: 1, button: 0});
 
-            assert.equal(control.getAttribute('aria-expanded'), 'false');
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
 
             done();
         });
     });
 
-    it('does nothing on missing expanded aria-controls', done => {
+    it('removes aria-* attributes on missing expanded aria-controls', done => {
         fixture = fixtureMissingAriaControlsExpanded();
 
         const {control} = fixture.refs;
 
+        assert.isFalse(control.hasAttribute('aria-controls'));
         assert.equal(control.getAttribute('aria-expanded'), 'true');
 
         ctrlyInstance = ctrly();
 
         ready(() => {
-            assert.equal(control.getAttribute('aria-expanded'), 'true');
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
 
             simulant.fire(control, 'click', {which: 1, button: 0});
 
-            assert.equal(control.getAttribute('aria-expanded'), 'true');
+            assert.isFalse(control.hasAttribute('aria-controls'));
+            assert.isFalse(control.hasAttribute('aria-expanded'));
 
             done();
         });

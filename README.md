@@ -50,11 +50,10 @@ Usage
 A typical setup includes a **control** (usually a `<button>` element) which
 toggles the visibility of a **target** element.
 
-The control must have a `data-ctrly` attribute and link to it's target through a
-`aria-controls` attribute which must contains the id of the target.
+The control must have a `data-ctrly` which must contain the ID of the target.
 
 ```html
-<button data-ctrly aria-controls="my-target">Toggle</button>
+<button data-ctrly="my-target">Toggle</button>
 <section id="my-target">You clicked the toggle to make me visible</section>
 ```
 
@@ -72,6 +71,32 @@ To initialize all controls, the `ctrly()` function must be called once.
 ctrly();
 ```
 
+ctrly then adds all required ARIA attributes, the `aria-controls` and 
+`aria-expanded` attributes to the control and the `aria-hidden` and
+`aria-labelledby` to the target.
+
+If the control does not have an `id` attribute, ctrly will add an auto-generated
+ID.
+
+The fully generated HTML looks like the following.
+
+```html
+<button
+    data-ctrly="my-target"
+    id="ctrly-control-1"
+    aria-controls="my-target"
+    aria-expanded="false">
+    Toggle
+</button>
+<section
+    id="my-target"
+    aria-hidden="false"
+    aria-labelledby=ctrly-control-1"
+>
+    You clicked the toggle to make me visible
+</section>
+```
+
 **Note:** ctrly does not ship with any default CSS which shows and hides the
 target element as it makes no assumptions on how the visibility is controlled.
 
@@ -83,38 +108,23 @@ toggled to either `false` or `true` by ctrly.
 .target-selector[aria-hidden="true"] {
     display: none;
 }
-.target-selector[aria-hidden="false"] {
-     display: block;
-}
 
 /* Toggle via the visibility property */
 .target-selector[aria-hidden="true"] {
     visibility: hidden;
 }
-.target-selector[aria-hidden="false"] {
-     visibility: visible;
+```
+
+It is also good practice to hide the controls if JavaScript is disabled.
+
+This can be done depending on the presence of the `aria-controls` attribute
+added by ctrly.
+
+```css
+.control-selector:not([aria-controls]) {
+    display: none;
 }
 ```
-
-It is also possible to toggle the visibility via the 
-[`hidden` attribute](https://developer.mozilla.org/de/docs/Web/HTML/Globale_Attribute/hidden).
-This can be implemented by using event callbacks to remove and add the attribute.
-
-```js
-ctrly({
-    on: {
-        open: target => {
-            target.removeAttribute('hidden');
-        },
-        close: target => {
-            target.addAttribute('hidden');
-        }
-    }
-});
-```
-
-More information about the event callbacks can be found in the 
-[Events section](#events).
 
 API
 ---
@@ -185,7 +195,7 @@ A selector for the control elements.
 #### Example
 
 ```html
-<button class="my-control" aria-controls="my-target">Toggle</button>
+<button class="my-control" data-ctrly="my-target">Toggle</button>
 ```
 
 ```js
@@ -208,10 +218,10 @@ See the [accordion example](examples/accordion/) for a use-case.
 
 ```html
 <div class="my-context">
-    <button data-ctrly aria-controls="my-target">Toggle</button>
+    <button data-ctrly="my-target">Toggle</button>
 </div>
 <div class="my-context">
-    <button data-ctrly aria-controls="my-target">Toggle</button>
+    <button data-ctrly="my-target">Toggle</button>
 </div>
 ```
 

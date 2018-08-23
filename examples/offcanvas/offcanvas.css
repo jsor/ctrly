@@ -1,3 +1,7 @@
+.offcanvas-control:not([aria-controls]) {
+    display: none;
+}
+
 .offcanvas-control {
     align-items: center;
     display: flex;
@@ -19,26 +23,38 @@
     height: 100%;
     z-index: 1000;
     -webkit-overflow-scrolling: touch;
-    transform: translate3d(105%, 0, 0);
-    transition: .35s cubic-bezier(.23, 1, .32, 1);
-    transition-property: transform;
-
     background: #eee;
     box-shadow: 0 0 15px rgba(0, 0, 0, .33);
+    transform: translate3d(105%, 0, 0);
 }
 
-.offcanvas-target[aria-hidden="false"] {
+.offcanvas-target[aria-hidden] {
+    transition: .35s cubic-bezier(.23, 1, .32, 1);
+    transition-property: transform, visibility;
+}
+
+.offcanvas-target[aria-hidden="true"] {
+    visibility: hidden;
+}
+
+.offcanvas-target[aria-hidden="false"],
+.offcanvas-target:not([aria-hidden]):focus-within {
     transform: translate3D(0, 0, 0);
+    visibility: visible;
 }
 
 .offcanvas-target-content {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px 20px;
+}
+
+.offcanvas-target:not([aria-hidden]) .offcanvas-close {
+    display: none;
 }
 
 .offcanvas-close {

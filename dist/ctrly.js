@@ -1,5 +1,5 @@
 /*!
- * ctrly v0.1.0 (2018-08-21)
+ * ctrly v0.2.0-dev (2018-08-23)
  * Copyright (c) 2018 Jan Sorgalla
  * License: MIT
  */
@@ -262,10 +262,17 @@
     function keyCode(e) {
       return 'which' in e ? e.which : e.keyCode;
     }
-    function findTarget(control) {
-      var targetId = control.getAttribute('aria-controls');
-      return document.getElementById(targetId);
+    function findControls(target) {
+      return find("[aria-controls=\"".concat(target.id, "\"]"));
     }
+    function findTarget(control) {
+      return document.getElementById(control.getAttribute('aria-controls') || control.getAttribute('data-ctrly'));
+    }
+    function resetControl(control) {
+      control.removeAttribute('aria-controls');
+      control.removeAttribute('aria-expanded');
+    }
+    var idCounter = 0;
     function ctrly() {
       var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var options = settings(opts);
@@ -293,6 +300,7 @@
         var returnFocus = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
         var target = findTarget(control);
         if (!target) {
+          resetControl(control);
           return false;
         }
         if (!target.hasAttribute('data-ctrly-opened')) {
@@ -306,7 +314,7 @@
           removers[target.id]();
           delete removers[target.id];
         }
-        find("[aria-controls=\"".concat(target.id, "\"]")).forEach(function (c) {
+        findControls(target).forEach(function (c) {
           c.setAttribute('aria-expanded', 'false');
         });
         target.removeAttribute('data-ctrly-opened');
@@ -398,6 +406,7 @@
       function open(control) {
         var target = findTarget(control);
         if (!target) {
+          resetControl(control);
           return false;
         }
         if (target.hasAttribute('data-ctrly-opened')) {
@@ -407,7 +416,7 @@
           return false;
         }
         removers[target.id] = addEventListeners(control, target);
-        find("[aria-controls=\"".concat(target.id, "\"]")).forEach(function (c) {
+        findControls(target).forEach(function (c) {
           c.setAttribute('aria-expanded', 'true');
         });
         target.setAttribute('data-ctrly-opened', '');
@@ -445,15 +454,29 @@
         }
         ready(function () {
           find(controlSelector).forEach(function (control) {
-            if (control.getAttribute('aria-expanded') === 'true') {
+            var target = findTarget(control);
+            if (!target) {
+              resetControl(control);
+              return;
+            }
+            control.setAttribute('aria-controls', target.id);
+            var labelledBy = findControls(target).map(function (control) {
+              if (!control.id) {
+                control.setAttribute('id', 'ctrly-control-' + ++idCounter);
+              }
+              return control.id;
+            });
+            var newLabelledBy = (target.getAttribute('aria-labelledby') || '').split(' ').concat(labelledBy).filter(function (id, pos, arr) {
+              return id !== '' && arr.indexOf(id) === pos;
+            });
+            target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
+            if (control.getAttribute('aria-expanded') === 'true' || control.hasAttribute('data-ctrly-open')) {
               open(control);
               return;
             }
             control.setAttribute('aria-expanded', 'false');
-            var target = findTarget(control);
-            if (target) {
-              target.setAttribute('aria-hidden', 'true');
-            }
+            target.setAttribute('aria-hidden', 'true');
+            target.removeAttribute('tabindex');
           });
         });
       }
@@ -467,7 +490,8 @@
         });
         for (var id in removers) {
           if (Object.prototype.hasOwnProperty.call(removers, id)) {
-            removers[id].call();
+            removers[id]();
+            delete removers[id];
           }
         }
       }

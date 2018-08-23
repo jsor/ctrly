@@ -1,3 +1,1 @@
-ctrly({
-    selector: '.dropdown-control'
-});
+ctrly();

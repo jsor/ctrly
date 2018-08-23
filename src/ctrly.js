@@ -46,11 +46,22 @@ function keyCode(e) {
     return 'which' in e ? e.which : e.keyCode;
 }
 
-function findTarget(control) {
-    const targetId = control.getAttribute('aria-controls');
-
-    return document.getElementById(targetId);
+function findControls(target) {
+    return find(`[aria-controls="${target.id}"]`);
 }
+
+function findTarget(control) {
+    return document.getElementById(
+        control.getAttribute('aria-controls') || control.getAttribute('data-ctrly')
+    );
+}
+
+function resetControl(control) {
+    control.removeAttribute('aria-controls');
+    control.removeAttribute('aria-expanded');
+}
+
+let idCounter = 0;
 
 export default function ctrly(opts = {}) {
     const options = settings(opts);
@@ -85,6 +96,7 @@ export default function ctrly(opts = {}) {
         const target = findTarget(control);
 
         if (!target) {
+            resetControl(control);
             return false;
         }
 
@@ -104,7 +116,7 @@ export default function ctrly(opts = {}) {
             delete removers[target.id];
         }
 
-        find(`[aria-controls="${target.id}"]`).forEach(c => {
+        findControls(target).forEach(c => {
             c.setAttribute('aria-expanded', 'false');
         });
 
@@ -241,6 +253,7 @@ export default function ctrly(opts = {}) {
         const target = findTarget(control);
 
         if (!target) {
+            resetControl(control);
             return false;
         }
 
@@ -254,7 +267,7 @@ export default function ctrly(opts = {}) {
 
         removers[target.id] = addEventListeners(control, target);
 
-        find(`[aria-controls="${target.id}"]`).forEach(c => {
+        findControls(target).forEach(c => {
             c.setAttribute('aria-expanded', 'true');
         });
 
@@ -309,18 +322,43 @@ export default function ctrly(opts = {}) {
 
         ready(() => {
             find(controlSelector).forEach(control => {
-                if (control.getAttribute('aria-expanded') === 'true') {
+                const target = findTarget(control);
+
+                if (!target) {
+                    resetControl(control);
+                    return;
+                }
+
+                control.setAttribute('aria-controls', target.id);
+
+                const labelledBy = findControls(target).map(control => {
+                    if (!control.id) {
+                        control.setAttribute('id', 'ctrly-control-' + ++idCounter);
+                    }
+
+                    return control.id;
+                });
+
+                const newLabelledBy = (target.getAttribute('aria-labelledby') || '')
+                    .split(' ')
+                    .concat(labelledBy)
+                    .filter((id, pos, arr) => {
+                        return id !== '' && arr.indexOf(id) === pos;
+                    });
+
+                target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
+
+                if (
+                    control.getAttribute('aria-expanded') === 'true' ||
+                    control.hasAttribute('data-ctrly-open')
+                ) {
                     open(control);
                     return;
                 }
 
                 control.setAttribute('aria-expanded', 'false');
-
-                const target = findTarget(control);
-
-                if (target) {
-                    target.setAttribute('aria-hidden', 'true');
-                }
+                target.setAttribute('aria-hidden', 'true');
+                target.removeAttribute('tabindex');
             });
         });
     }
