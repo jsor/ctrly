@@ -41,6 +41,11 @@
 .offcanvas-target:not([aria-hidden]):focus-within {
     transform: translate3D(0, 0, 0);
     visibility: visible;
+    /*
+      This removes the transition from the visibility property when opening
+      the target. Otherwise, elements inside the target aren't focusable.
+    */
+    transition-property: transform;
 }
 
 .offcanvas-target-content {
