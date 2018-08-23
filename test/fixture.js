@@ -26,7 +26,7 @@ export function fixtureDefault() {
 <button ref="focusableBefore">Focusable Before</button>
 <button ref="control" data-ctrly="target">Toggle</button>
 <section ref="target" id="target">
-    <button ref="targetClose" data-ctrly>Close</button>
+    <button ref="targetClose" data-ctrly="target">Close</button>
     Hello!
     <a ref="targetLink" href="#">Link</a>
 </section>
@@ -38,7 +38,7 @@ export function fixtureExpanded() {
     return fixture(`
 <button ref="control" data-ctrly="target" data-ctrly-open>Toggle</button>
 <section ref="target" id="target">
-    <button ref="targetClose" data-ctrly>Close</button>
+    <button ref="targetClose" data-ctrly="target" data-ctrly-open>Close</button>
     Hello!
     <a ref="targetLink" href="#">Link</a>
 </section>
@@ -50,7 +50,7 @@ export function fixtureMultiple() {
 <div class="context">
     <button ref="control" data-ctrly="target">Toggle</button>
     <section ref="target" id="target">
-        <button ref="targetClose" data-ctrly>Close</button>
+        <button ref="targetClose" data-ctrly="target">Close</button>
         Hello!
         <a ref="targetLink" href="#">Link</a>
     </section>
@@ -58,7 +58,7 @@ export function fixtureMultiple() {
 <div class="context">
     <button ref="control2" data-ctrly="target2">Toggle</button>
     <section ref="target2" id="target2">
-        <button ref="targetClose2" data-ctrly>Close</button>
+        <button ref="targetClose2" data-ctrly="target2">Close</button>
         Hello!
         <a ref="targetLink2" href="#">Link</a>
     </section>
