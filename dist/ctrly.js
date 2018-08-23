@@ -305,11 +305,9 @@
           element = element.parentElement;
         }
       }
-      function close(control) {
+      function close(target) {
         var returnFocus = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-        var target = findTarget(control);
         if (!target) {
-          resetControl(control);
           return false;
         }
         if (!target.hasAttribute('data-ctrly-opened')) {
@@ -319,9 +317,12 @@
           return false;
         }
         var currentActiveElement = activeElement();
-        if (instances[target.id]) {
-          instances[target.id].destroy();
-          delete instances[target.id];
+        var _ref = instances[target.id] || {},
+            lastActiveElement = _ref.lastActiveElement,
+            destroy = _ref.destroy;
+        delete instances[target.id];
+        if (destroy) {
+          destroy();
         }
         findControls(target).forEach(function (c) {
           c.setAttribute('aria-expanded', 'false');
@@ -330,17 +331,18 @@
         target.setAttribute('aria-hidden', 'true');
         target.removeAttribute('tabindex');
         target.blur();
-        if (returnFocus && target.contains(currentActiveElement)) {
-          focus(control, {
+        if (returnFocus && lastActiveElement && target.contains(currentActiveElement)) {
+          focus(lastActiveElement, {
             restoreScrollPosition: true
           });
         }
         trigger(target, 'closed');
         return target;
       }
-      function closeOthers(control) {
-        find(controlSelector, context(control)).forEach(function (other) {
-          if (other !== control) {
+      function closeOthers(target) {
+        find(controlSelector, context(target)).forEach(function (control) {
+          var other = findTarget(control);
+          if (other && other.id !== target.id) {
             close(other, false);
           }
         });
@@ -362,7 +364,7 @@
         }
         if (options.closeOnEsc) {
           removeFuncs.push(on(document, 'keydown', function (e) {
-            if (keyCode(e) === 27 && close(control)) {
+            if (keyCode(e) === 27 && close(target)) {
               e.preventDefault();
             }
           }));
@@ -370,14 +372,14 @@
         if (options.closeOnOutsideClick) {
           removeFuncs.push(on(document, 'click', function (e) {
             if (!active && keyCode(e) === 1 && !closest(e.target, controlSelector)) {
-              close(control);
+              close(target);
             }
           }, passiveEventOptions));
         }
         if (options.closeOnScroll) {
           removeFuncs.push(on(window, 'scroll', function () {
             if (!active) {
-              close(control);
+              close(target);
             }
           }, passiveEventOptions));
         }
@@ -425,6 +427,7 @@
           return false;
         }
         instances[target.id] = {
+          lastActiveElement: activeElement(),
           destroy: addEventListeners(control, target)
         };
         findControls(target).forEach(function (c) {
@@ -443,18 +446,21 @@
             if (keyCode(e) !== 1) {
               return;
             }
-            if (control.getAttribute('aria-expanded') === 'true') {
-              if (close(control)) {
+            var target = findTarget(control);
+            if (!target) {
+              if (close(findParentTarget(control))) {
                 e.preventDefault();
               }
               return;
             }
-            var target = findTarget(control);
-            if (!target) {
-              target = findParentTarget(control);
+            if (control.getAttribute('aria-expanded') === 'true') {
+              if (close(target)) {
+                e.preventDefault();
+              }
+              return;
             }
             if (!options.allowMultiple) {
-              closeOthers(control);
+              closeOthers(target);
             }
             open(control);
             if (target) {
@@ -501,7 +507,10 @@
           removeControlClick = null;
         }
         find(controlSelector).forEach(function (control) {
-          close(control, false);
+          var target = findTarget(control);
+          if (target) {
+            close(target, false);
+          }
         });
         for (var id in instances) {
           if (Object.prototype.hasOwnProperty.call(instances, id)) {

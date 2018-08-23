@@ -529,6 +529,27 @@ describe('ctrly()', () => {
         });
     });
 
+    it('returns focus to last activeElement after close', done => {
+        fixture = fixtureDefault();
+
+        const {control, target, targetClose} = fixture.refs;
+
+        ctrlyInstance = ctrly();
+
+        ready(() => {
+            control.focus();
+            simulant.fire(control, 'click', {which: 1, button: 0});
+
+            assertOpen(control, target);
+
+            simulant.fire(targetClose, 'click', {which: 1, button: 0});
+
+            assertClosed(control, target);
+
+            done();
+        });
+    });
+
     it('resets elements on destroy()', done => {
         fixture = fixtureDefault();
 

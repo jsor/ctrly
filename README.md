@@ -208,7 +208,7 @@ ctrly({
 
 *Default:* `null`
 
-A selector to group controls together. Can be used in combination with the
+A selector to group targets together. Can be used in combination with the
 [allowMultiple](#allowmultiple) option to allow or disallow multiple open
 targets inside a context.
 

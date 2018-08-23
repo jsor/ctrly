@@ -104,11 +104,8 @@ export default function ctrly(opts = {}) {
         }
     }
 
-    function close(control, returnFocus = true) {
-        const target = findTarget(control);
-
+    function close(target, returnFocus = true) {
         if (!target) {
-            resetControl(control);
             return false;
         }
 
@@ -123,9 +120,11 @@ export default function ctrly(opts = {}) {
         // Store reference before we call target.blur()
         const currentActiveElement = activeElement();
 
-        if (instances[target.id]) {
-            instances[target.id].destroy();
-            delete instances[target.id];
+        const {lastActiveElement, destroy} = instances[target.id] || {};
+        delete instances[target.id];
+
+        if (destroy) {
+            destroy();
         }
 
         findControls(target).forEach(c => {
@@ -140,8 +139,12 @@ export default function ctrly(opts = {}) {
         target.blur();
 
         // We return focus only if the current focus is inside this target
-        if (returnFocus && target.contains(currentActiveElement)) {
-            focus(control, {
+        if (
+            returnFocus &&
+            lastActiveElement &&
+            target.contains(currentActiveElement)
+        ) {
+            focus(lastActiveElement, {
                 restoreScrollPosition: true
             });
         }
@@ -151,9 +154,11 @@ export default function ctrly(opts = {}) {
         return target;
     }
 
-    function closeOthers(control) {
-        find(controlSelector, context(control)).forEach(other => {
-            if (other !== control) {
+    function closeOthers(target) {
+        find(controlSelector, context(target)).forEach(control => {
+            const other = findTarget(control);
+
+            if (other && other.id !== target.id) {
                 close(other, false);
             }
         });
@@ -190,7 +195,7 @@ export default function ctrly(opts = {}) {
         if (options.closeOnEsc) {
             removeFuncs.push(
                 on(document, 'keydown', e => {
-                    if (keyCode(e) === 27 && close(control)) {
+                    if (keyCode(e) === 27 && close(target)) {
                         e.preventDefault();
                     }
                 })
@@ -205,7 +210,7 @@ export default function ctrly(opts = {}) {
                     // - if it's a left button mouse click
                     // - if the click did not originated from (within) a control
                     if (!active && keyCode(e) === 1 && !closest(e.target, controlSelector)) {
-                        close(control);
+                        close(target);
                     }
                 }, passiveEventOptions)
             );
@@ -215,7 +220,7 @@ export default function ctrly(opts = {}) {
             removeFuncs.push(
                 on(window, 'scroll', () => {
                     if (!active) {
-                        close(control);
+                        close(target);
                     }
                 }, passiveEventOptions)
             );
@@ -278,6 +283,7 @@ export default function ctrly(opts = {}) {
         }
 
         instances[target.id] = {
+            lastActiveElement: activeElement(),
             destroy: addEventListeners(control, target)
         };
 
@@ -304,24 +310,28 @@ export default function ctrly(opts = {}) {
                     return;
                 }
 
-                if (control.getAttribute('aria-expanded') === 'true') {
-                    if (close(control)) {
+                const target = findTarget(control);
+
+                if (!target) {
+                    // Allow controls without a value for data-ctrly
+                    // to close a target if it's a child element
+                    if (close(findParentTarget(control))) {
                         e.preventDefault();
                     }
 
                     return;
                 }
 
-                let target = findTarget(control);
+                if (control.getAttribute('aria-expanded') === 'true') {
+                    if (close(target)) {
+                        e.preventDefault();
+                    }
 
-                if (!target) {
-                    // Allow controls without a value for data-ctrly
-                    // to close a target if it's a child element
-                    target = findParentTarget(control);
+                    return;
                 }
 
                 if (!options.allowMultiple) {
-                    closeOthers(control);
+                    closeOthers(target);
                 }
 
                 open(control);
@@ -392,7 +402,11 @@ export default function ctrly(opts = {}) {
         }
 
         find(controlSelector).forEach(control => {
-            close(control, false);
+            const target = findTarget(control);
+
+            if (target) {
+                close(target, false);
+            }
         });
 
         // Iterate leftover instances
