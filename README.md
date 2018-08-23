@@ -91,7 +91,7 @@ The fully generated HTML looks like the following.
 <section
     id="my-target"
     aria-hidden="false"
-    aria-labelledby=ctrly-control-1"
+    aria-labelledby="ctrly-control-1"
 >
     You clicked the toggle to make me visible
 </section>
