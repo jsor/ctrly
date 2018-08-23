@@ -18,6 +18,13 @@
 <h1>Dropdown Example</h1>
 
 <div class="dropdown">
+    <button
+        class="button-reset dropdown-control"
+        data-ctrly="dropdown-target"
+    >
+        Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
+    </button>
+
     <section
             id="dropdown-target"
             class="dropdown-target"
@@ -31,16 +38,17 @@
             </li>
         </ul>
     </section>
-
-    <button
-        class="button-reset dropdown-control"
-        data-ctrly="dropdown-target"
-    >
-        Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
-    </button>
 </div>
 
 <div class="dropdown">
+    <button
+        class="button-reset dropdown-control"
+        data-ctrly="dropdown-target-expanded"
+        data-ctrly-open
+    >
+        Expanded Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
+    </button>
+
     <section
             class="dropdown-target"
             id="dropdown-target-expanded"
@@ -54,14 +62,6 @@
             </li>
         </ul>
     </section>
-
-    <button
-        class="button-reset dropdown-control"
-        data-ctrly="dropdown-target-expanded"
-        data-ctrly-open
-    >
-        Expanded Dropdown <span class="dropdown-control-caret" aria-hidden="true"></span>
-    </button>
 </div>
 
 </body>
