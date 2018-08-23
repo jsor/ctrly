@@ -395,7 +395,7 @@ export default function ctrly(opts = {}) {
             close(control, false);
         });
 
-        // Iterate leftover removers
+        // Iterate leftover instances
         for (const id in instances) {
             if (Object.prototype.hasOwnProperty.call(instances, id)) {
                 instances[id].destroy();

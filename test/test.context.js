@@ -31,10 +31,12 @@ describe('ctrly(context)', () => {
 
         ready(() => {
             assertClosed(control, target);
+            assertClosed(control2, target2);
 
             simulant.fire(control, 'click', {which: 1, button: 0});
 
             assertOpen(control, target);
+            assertClosed(control2, target2);
 
             simulant.fire(control2, 'click', {which: 1, button: 0});
 
