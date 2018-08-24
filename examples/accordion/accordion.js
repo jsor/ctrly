@@ -6,6 +6,7 @@
 
     ctrly({
         context: '.accordion',
+        closeOnBlur: false,
         closeOnEsc: false,
         closeOnOutsideClick: false,
         focusTarget: false,

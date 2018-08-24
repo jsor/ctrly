@@ -13,6 +13,7 @@ const defaultOptions = {
     selector: '[data-ctrly]',
     context: null,
     focusTarget: true,
+    closeOnBlur: true,
     closeOnEsc: true,
     closeOnOutsideClick: true,
     closeOnScroll: false,
@@ -189,6 +190,20 @@ export default function ctrly(opts = {}) {
             );
             removeFuncs.push(
                 on(target, 'touchend', deactivate, passiveEventOptions)
+            );
+        }
+
+        if (options.closeOnBlur && !options.constrainFocus) {
+            removeFuncs.push(
+                on(target, 'focusout', e => {
+                    if (
+                        e.relatedTarget &&
+                        !target.contains(e.relatedTarget) &&
+                        !closest(e.relatedTarget, controlSelector)
+                    ) {
+                        close(target, false);
+                    }
+                }, {capture: true, passive: true})
             );
         }
 

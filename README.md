@@ -17,7 +17,7 @@ It can be used to implement dropdown or off-canvas menus, modals, accordions
 and similar UI elements. Example implementations can be found in the 
 [`examples/` directory](examples/).
 
-Minified and gzipped, the total footprint weights about 2kB.
+Minified and gzipped, the total footprint weights about 2.5kB.
 
 Installation
 ------------
@@ -179,6 +179,7 @@ The following options are available.
 * [selector](#selector)
 * [context](#context)
 * [focusTarget](#focustarget)
+* [closeOnBlur](#closeonblur)
 * [closeOnEsc](#closeonesc)
 * [closeOnOutsideClick](#closeonoutsideclick)
 * [closeOnScroll](#closeonscroll)
@@ -244,6 +245,25 @@ behavior.
 ```js
 ctrly({
     closeOnScroll: false
+});
+```
+
+### closeOnBlur
+
+*Default:* `true`
+
+By default, targets are closed when the focus is shifted from an element inside
+the target to an element outside the target. Passing `false` as an option
+disables this behavior.
+
+> This setting is always `false` if [`constrainFocus`](#constrainfocus) is set
+  to `true`.
+
+#### Example
+
+```js
+ctrly({
+    closeOnBlur: false
 });
 ```
 

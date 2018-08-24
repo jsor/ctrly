@@ -1,5 +1,5 @@
 /*!
- * ctrly v0.2.0-dev (2018-08-23)
+ * ctrly v0.2.0-dev (2018-08-24)
  * Copyright (c) 2018 Jan Sorgalla
  * License: MIT
  */
@@ -230,6 +230,7 @@ var defaultOptions = {
   selector: '[data-ctrly]',
   context: null,
   focusTarget: true,
+  closeOnBlur: true,
   closeOnEsc: true,
   closeOnOutsideClick: true,
   closeOnScroll: false,
@@ -355,6 +356,16 @@ function ctrly() {
       removeFuncs.push(on(target, 'mouseleave', deactivate, passiveEventOptions));
       removeFuncs.push(on(target, 'touchstart', activate, passiveEventOptions));
       removeFuncs.push(on(target, 'touchend', deactivate, passiveEventOptions));
+    }
+    if (options.closeOnBlur && !options.constrainFocus) {
+      removeFuncs.push(on(target, 'focusout', function (e) {
+        if (e.relatedTarget && !target.contains(e.relatedTarget) && !closest(e.relatedTarget, controlSelector)) {
+          close(target, false);
+        }
+      }, {
+        capture: true,
+        passive: true
+      }));
     }
     if (options.closeOnEsc) {
       removeFuncs.push(on(document, 'keydown', function (e) {
