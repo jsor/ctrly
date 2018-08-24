@@ -24,10 +24,6 @@ const defaultOptions = {
 
 const focusableElementsSelector = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
 
-const passiveEventOptions = {
-    passive: true
-};
-
 function settings(opts) {
     const extended = {};
     const args = [defaultOptions, opts];
@@ -180,16 +176,16 @@ export default function ctrly(opts = {}) {
 
         if (options.closeOnOutsideClick || options.closeOnScroll) {
             removeFuncs.push(
-                on(target, 'mouseenter', activate, passiveEventOptions)
+                on(target, 'mouseenter', activate, {passive: true})
             );
             removeFuncs.push(
-                on(target, 'mouseleave', deactivate, passiveEventOptions)
+                on(target, 'mouseleave', deactivate, {passive: true})
             );
             removeFuncs.push(
-                on(target, 'touchstart', activate, passiveEventOptions)
+                on(target, 'touchstart', activate, {passive: true})
             );
             removeFuncs.push(
-                on(target, 'touchend', deactivate, passiveEventOptions)
+                on(target, 'touchend', deactivate, {passive: true})
             );
         }
 
@@ -227,7 +223,7 @@ export default function ctrly(opts = {}) {
                     if (!active && keyCode(e) === 1 && !closest(e.target, controlSelector)) {
                         close(target);
                     }
-                }, passiveEventOptions)
+                }, {passive: true})
             );
         }
 
@@ -237,7 +233,7 @@ export default function ctrly(opts = {}) {
                     if (!active) {
                         close(target);
                     }
-                }, passiveEventOptions)
+                }, {passive: true})
             );
         }
 

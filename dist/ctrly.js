@@ -245,9 +245,6 @@
       on: null
     };
     var focusableElementsSelector = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
-    var passiveEventOptions = {
-      passive: true
-    };
     function settings(opts) {
       var extended = {};
       var args = [defaultOptions, opts];
@@ -358,10 +355,18 @@
           active = false;
         };
         if (options.closeOnOutsideClick || options.closeOnScroll) {
-          removeFuncs.push(on(target, 'mouseenter', activate, passiveEventOptions));
-          removeFuncs.push(on(target, 'mouseleave', deactivate, passiveEventOptions));
-          removeFuncs.push(on(target, 'touchstart', activate, passiveEventOptions));
-          removeFuncs.push(on(target, 'touchend', deactivate, passiveEventOptions));
+          removeFuncs.push(on(target, 'mouseenter', activate, {
+            passive: true
+          }));
+          removeFuncs.push(on(target, 'mouseleave', deactivate, {
+            passive: true
+          }));
+          removeFuncs.push(on(target, 'touchstart', activate, {
+            passive: true
+          }));
+          removeFuncs.push(on(target, 'touchend', deactivate, {
+            passive: true
+          }));
         }
         if (options.closeOnBlur && !options.constrainFocus) {
           removeFuncs.push(on(target, 'focusout', function (e) {
@@ -385,14 +390,18 @@
             if (!active && keyCode(e) === 1 && !closest(e.target, controlSelector)) {
               close(target);
             }
-          }, passiveEventOptions));
+          }, {
+            passive: true
+          }));
         }
         if (options.closeOnScroll) {
           removeFuncs.push(on(window, 'scroll', function () {
             if (!active) {
               close(target);
             }
-          }, passiveEventOptions));
+          }, {
+            passive: true
+          }));
         }
         if (options.constrainFocus) {
           removeFuncs.push(on(document, 'keydown', function (e) {
