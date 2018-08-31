@@ -3,17 +3,17 @@
     "test_path": "test/index.html",
     "exit_with_fail": true,
     "browsers": [
-        "chrome_previous",
+        "chrome_49",
         "chrome_latest",
-        "firefox_previous",
-        "firefox_latest",
-        "opera_previous",
-        "opera_latest",
-        "safari_previous",
-        "safari_latest",
+        "edge_15",
         "edge_latest",
-        "edge_previous",
+        "firefox_52",
+        "firefox_latest",
         "ie_10",
-        "ie_11"
+        "ie_11",
+        "opera_52",
+        "opera_latest",
+        "safari_10_1",
+        "safari_latest"
     ]
 }

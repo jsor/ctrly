@@ -25,7 +25,14 @@
     "src"
   ],
   "browserslist": [
-    "last 2 versions"
+    "defaults",
+    "IE >= 10",
+
+    "Chrome >= 60",
+    "Edge >= 15",
+    "Firefox >= 54",
+    "iOS >= 10.3",
+    "Safari >= 10.1"
   ],
   "xo": {
     "space": 4,
