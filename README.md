@@ -17,7 +17,7 @@ It can be used to implement dropdown or off-canvas menus, modals, accordions
 and similar UI elements. Example implementations can be found in the 
 [`examples/` directory](examples/).
 
-Minified and gzipped, the total footprint weights about 2.5kB.
+Minified and gzipped, the total footprint weights about 2.7kB.
 
 Installation
 ------------

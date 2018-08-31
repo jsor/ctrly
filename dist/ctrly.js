@@ -1,5 +1,5 @@
 /*!
- * ctrly v0.2.0-dev (2018-08-24)
+ * ctrly v0.2.0-dev (2018-08-31)
  * Copyright (c) 2018 Jan Sorgalla
  * License: MIT
  */
@@ -29,20 +29,13 @@
     }
 
     function scrollPositionRestorer(element) {
-      var positions = parents(element).map(function (element) {
-        return {
-          element: element,
-          top: element.scrollTop,
-          left: element.scrollLeft
-        };
+      var positions = parents(element).map(function (parent) {
+        return [parent, parent.scrollTop, parent.scrollLeft];
       });
       return function () {
-        positions.forEach(function (_ref) {
-          var element = _ref.element,
-              top = _ref.top,
-              left = _ref.left;
-          element.scrollTop = top;
-          element.scrollLeft = left;
+        positions.forEach(function (cache) {
+          cache[0].scrollTop = cache[1];
+          cache[0].scrollLeft = cache[2];
         });
       };
     }
@@ -232,6 +225,64 @@
       }));
     }
 
+    var selector = ['a[href]',
+    'area[href]', 'input', 'select', 'textarea', 'button', 'iframe', 'object', 'audio[controls]', 'video[controls]', '[contenteditable]', '[tabindex]'].join(',');
+    var inputNodeNameRegexp = /^(input|select|textarea|button|object)$/;
+    function focusableFilter(element) {
+      var nodeName = element.nodeName.toLowerCase();
+      if (nodeName === 'area') {
+        return isValidArea(element);
+      }
+      if (element.disabled) {
+        return false;
+      }
+      if (inputNodeNameRegexp.test(nodeName)) {
+        var fieldset = closest(element, 'fieldset');
+        if (fieldset && fieldset.disabled) {
+          return false;
+        }
+      }
+      return visible(element);
+    }
+    function tabbableFilter(element) {
+      var index = tabIndex(element);
+      return focusableFilter(element) && index >= 0;
+    }
+    function compare(a, b) {
+      var aIndex = tabIndex(a, true);
+      var bIndex = tabIndex(b, true);
+      if (aIndex === bIndex) {
+        return a.compareDocumentPosition(b) & 2 ? 1 : -1;
+      }
+      return aIndex - bIndex;
+    }
+    function isValidArea(element) {
+      var map = element.parentNode;
+      var mapName = map.name;
+      if (!element.href || !mapName || map.nodeName.toLowerCase() !== 'map') {
+        return false;
+      }
+      var images = find("img[usemap=\"#".concat(mapName, "\"]"));
+      return images.length > 0 && visible(images[0]);
+    }
+    function visible(element) {
+      var style = getComputedStyle(element);
+      return (
+        style.visibility !== 'hidden' && style.visibility !== 'collapse' && style.display !== 'none' && parents(element).every(function (el) {
+          return getComputedStyle(el).display !== 'none';
+        })
+      );
+    }
+    function tabIndex(element) {
+      var positiveOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var index = parseInt(element.getAttribute('tabindex'), 10);
+      return isNaN(index) ? 0 : positiveOnly && index < 0 ? 0 : index;
+    }
+
+    function tabbable(element) {
+      return find(selector, arguments.length > 0 ? element : document).filter(tabbableFilter).sort(compare);
+    }
+
     var defaultOptions = {
       selector: '[data-ctrly]',
       context: null,
@@ -244,7 +295,6 @@
       allowMultiple: false,
       on: null
     };
-    var focusableElementsSelector = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
     function settings(opts) {
       var extended = {};
       var args = [defaultOptions, opts];
@@ -408,15 +458,15 @@
             if (keyCode(e) !== 9) {
               return;
             }
-            var focusableElements = find(focusableElementsSelector, target);
-            if (!focusableElements[0]) {
+            var tabbableElements = tabbable(target);
+            if (!tabbableElements[0]) {
               e.preventDefault();
               focus(target);
               return;
             }
             var active = activeElement();
-            var firstTabStop = focusableElements[0];
-            var lastTabStop = focusableElements[focusableElements.length - 1];
+            var firstTabStop = tabbableElements[0];
+            var lastTabStop = tabbableElements[tabbableElements.length - 1];
             if (e.shiftKey && active === firstTabStop) {
               e.preventDefault();
               focus(lastTabStop);
@@ -486,7 +536,7 @@
             if (target) {
               e.preventDefault();
               if (options.focusTarget) {
-                focus(find(focusableElementsSelector, target)[0] || target);
+                focus(tabbable(target)[0] || target);
               }
               target.scrollTop = 0;
               target.scrollLeft = 0;

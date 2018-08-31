@@ -6,7 +6,8 @@ import {
     find,
     focus,
     on,
-    ready
+    ready,
+    tabbable
 } from 'domestique';
 
 const defaultOptions = {
@@ -21,8 +22,6 @@ const defaultOptions = {
     allowMultiple: false,
     on: null
 };
-
-const focusableElementsSelector = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
 
 function settings(opts) {
     const extended = {};
@@ -244,17 +243,17 @@ export default function ctrly(opts = {}) {
                         return;
                     }
 
-                    const focusableElements = find(focusableElementsSelector, target);
+                    const tabbableElements = tabbable(target);
 
-                    if (!focusableElements[0]) {
+                    if (!tabbableElements[0]) {
                         e.preventDefault();
                         focus(target);
                         return;
                     }
 
                     const active = activeElement();
-                    const firstTabStop = focusableElements[0];
-                    const lastTabStop = focusableElements[focusableElements.length - 1];
+                    const firstTabStop = tabbableElements[0];
+                    const lastTabStop = tabbableElements[tabbableElements.length - 1];
 
                     if (e.shiftKey && active === firstTabStop) {
                         e.preventDefault();
@@ -352,7 +351,7 @@ export default function ctrly(opts = {}) {
 
                     if (options.focusTarget) {
                         focus(
-                            find(focusableElementsSelector, target)[0] || target
+                            tabbable(target)[0] || target
                         );
                     }
 
