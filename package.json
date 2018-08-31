@@ -76,7 +76,7 @@
     "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-istanbul": "^2.0.1",
     "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-uglify": "^4.0.0",
+    "rollup-plugin-uglify": "^5.0.2",
     "simulant": "^0.2.2",
     "size-limit": "^0.19.3",
     "xo": "^0.22.0"

@@ -21,6 +21,9 @@ const babelPlugin = babel({
     babelrc: false,
     presets: [['@babel/preset-env', {modules: false}]]
 });
+const cleanupPlugin = cleanup({
+    comments: 'some'
+});
 
 export default [
     {
@@ -34,9 +37,7 @@ export default [
             cleanPlugin,
             resolvePlugin,
             babelPlugin,
-            cleanup({
-                comments: 'some'
-            })
+            cleanupPlugin
         ]
     },
     {
@@ -51,9 +52,7 @@ export default [
             cleanPlugin,
             resolvePlugin,
             babelPlugin,
-            cleanup({
-                comments: 'some'
-            })
+            cleanupPlugin
         ]
     },
     {
@@ -68,13 +67,10 @@ export default [
             cleanPlugin,
             resolvePlugin,
             babelPlugin,
+            cleanupPlugin,
             uglify({
                 output: {
-                    comments: (node, comment) => {
-                        if (comment.type === 'comment2') {
-                            return /^!/i.test(comment.value);
-                        }
-                    }
+                    comments: 'all'
                 }
             })
         ]
