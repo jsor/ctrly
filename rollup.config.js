@@ -9,7 +9,7 @@ const pkg = require('./package.json');
 const now = new Date();
 const banner = () => {
     return '/*!\n' +
-        ' * ' + (pkg.title || pkg.name) + ' v' + pkg.version + ' (' + now.toISOString().split('T')[0] + ')\n' +
+        ' * ' + (pkg.title || pkg.name) + ' v' + pkg.version + '\n' +
         ' * Copyright (c) ' + now.getFullYear() + ' ' + pkg.author.name + '\n' +
         ' * License: ' + pkg.license + '\n' +
         ' */';

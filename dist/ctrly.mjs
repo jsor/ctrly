@@ -1,5 +1,5 @@
 /*!
- * ctrly v0.2.0-dev (2018-08-31)
+ * ctrly v0.2.0-dev
  * Copyright (c) 2018 Jan Sorgalla
  * License: MIT
  */
