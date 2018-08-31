@@ -1,6 +1,4 @@
 {
-    "username": "jansorgalla1",
-    "key": "XeEUSBzuSpKp1HJfvMyC",
     "test_framework": "mocha",
     "test_path": "test/index.html",
     "exit_with_fail": true,
