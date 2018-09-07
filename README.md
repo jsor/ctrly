@@ -35,8 +35,8 @@ import ctrly from 'ctrly';
 ```
 
 The latest version can also be downloaded or included from 
-[unpkg](https://unpkg.com/ctrly/dist/) or 
-[jsDelivr](https://cdn.jsdelivr.net/npm/ctrly/dist/).
+[unpkg](https://unpkg.com/ctrly) or
+[jsDelivr](https://cdn.jsdelivr.net/npm/ctrly).
 
 ```html
 <script src="/path/to/ctrly.js"></script>
