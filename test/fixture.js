@@ -67,17 +67,17 @@ export function fixtureMultiple() {
 }
 
 export function fixtureInvalidAriaControls() {
-    return fixture(`<button data-ctrly ref="control" aria-controls="invalid-target" aria-expanded="false">Toggle</button>`);
+    return fixture('<button data-ctrly ref="control" aria-controls="invalid-target" aria-expanded="false">Toggle</button>');
 }
 
 export function fixtureInvalidAriaControlsExpanded() {
-    return fixture(`<button data-ctrly ref="control" aria-controls="invalid-target" aria-expanded="true">Toggle</button>`);
+    return fixture('<button data-ctrly ref="control" aria-controls="invalid-target" aria-expanded="true">Toggle</button>');
 }
 
 export function fixtureMissingAriaControls() {
-    return fixture(`<button data-ctrly ref="control" aria-expanded="false">Toggle</button>`);
+    return fixture('<button data-ctrly ref="control" aria-expanded="false">Toggle</button>');
 }
 
 export function fixtureMissingAriaControlsExpanded() {
-    return fixture(`<button data-ctrly ref="control" aria-expanded="true">Toggle</button>`);
+    return fixture('<button data-ctrly ref="control" aria-expanded="true">Toggle</button>');
 }
