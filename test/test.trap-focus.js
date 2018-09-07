@@ -23,7 +23,7 @@ function addTabListener() {
     });
 }
 
-describe('ctrly(constrainFocus)', () => {
+describe('ctrly(trapFocus)', () => {
     let fixture;
     let ctrlyInstance;
 
@@ -43,7 +43,7 @@ describe('ctrly(constrainFocus)', () => {
         }
     });
 
-    it('does not constrain focus by default', done => {
+    it('does not trap focus by default', done => {
         const {control, target, targetLink, focusableAfter} = fixture.refs;
 
         ctrlyInstance = ctrly();
@@ -72,10 +72,10 @@ describe('ctrly(constrainFocus)', () => {
         });
     });
 
-    it('does not constrain focus for other keys than TAB', done => {
+    it('does not trap focus for other keys than TAB', done => {
         const {control, target, targetLink} = fixture.refs;
 
-        ctrlyInstance = ctrly({constrainFocus: true});
+        ctrlyInstance = ctrly({trapFocus: true});
 
         ready(() => {
             assertClosed(control, target);
@@ -100,10 +100,10 @@ describe('ctrly(constrainFocus)', () => {
         });
     });
 
-    it('constrains focus for TAB if configured', done => {
+    it('traps focus for TAB if configured', done => {
         const {control, target, targetLink, targetClose} = fixture.refs;
 
-        ctrlyInstance = ctrly({constrainFocus: true});
+        ctrlyInstance = ctrly({trapFocus: true});
 
         ready(() => {
             assertClosed(control, target);
@@ -128,10 +128,10 @@ describe('ctrly(constrainFocus)', () => {
         });
     });
 
-    it('constrains focus for SHIFT+TAB if configured', done => {
+    it('traps focus for SHIFT+TAB if configured', done => {
         const {control, target, targetLink, targetClose} = fixture.refs;
 
-        ctrlyInstance = ctrly({constrainFocus: true});
+        ctrlyInstance = ctrly({trapFocus: true});
 
         ready(() => {
             assertClosed(control, target);
@@ -159,7 +159,7 @@ describe('ctrly(constrainFocus)', () => {
     it('allows normal tabbing inside the target', done => {
         const {control, target, targetLink, targetClose} = fixture.refs;
 
-        ctrlyInstance = ctrly({constrainFocus: true});
+        ctrlyInstance = ctrly({trapFocus: true});
 
         ready(() => {
             assertClosed(control, target);
@@ -189,7 +189,7 @@ describe('ctrly(constrainFocus)', () => {
 
         target.innerHTML = '';
 
-        ctrlyInstance = ctrly({constrainFocus: true});
+        ctrlyInstance = ctrly({trapFocus: true});
 
         ready(() => {
             assertClosed(control, target);

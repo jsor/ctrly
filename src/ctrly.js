@@ -18,7 +18,7 @@ const defaultOptions = {
     closeOnEsc: true,
     closeOnOutsideClick: true,
     closeOnScroll: false,
-    constrainFocus: false,
+    trapFocus: false,
     allowMultiple: false,
     on: null
 };
@@ -188,7 +188,7 @@ export default function ctrly(opts = {}) {
             );
         }
 
-        if (options.closeOnBlur && !options.constrainFocus) {
+        if (options.closeOnBlur && !options.trapFocus) {
             removeFuncs.push(
                 on(target, 'focusout', e => {
                     if (
@@ -236,7 +236,7 @@ export default function ctrly(opts = {}) {
             );
         }
 
-        if (options.constrainFocus) {
+        if (options.trapFocus) {
             removeFuncs.push(
                 on(document, 'keydown', e => {
                     if (keyCode(e) !== 9) {

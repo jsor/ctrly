@@ -285,7 +285,7 @@ var defaultOptions = {
   closeOnEsc: true,
   closeOnOutsideClick: true,
   closeOnScroll: false,
-  constrainFocus: false,
+  trapFocus: false,
   allowMultiple: false,
   on: null
 };
@@ -412,7 +412,7 @@ function ctrly() {
         passive: true
       }));
     }
-    if (options.closeOnBlur && !options.constrainFocus) {
+    if (options.closeOnBlur && !options.trapFocus) {
       removeFuncs.push(on(target, 'focusout', function (e) {
         if (e.relatedTarget && !target.contains(e.relatedTarget) && !closest(e.relatedTarget, controlSelector)) {
           close(target, false);
@@ -447,7 +447,7 @@ function ctrly() {
         passive: true
       }));
     }
-    if (options.constrainFocus) {
+    if (options.trapFocus) {
       removeFuncs.push(on(document, 'keydown', function (e) {
         if (keyCode(e) !== 9) {
           return;

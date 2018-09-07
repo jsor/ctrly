@@ -183,7 +183,7 @@ The following options are available.
 * [closeOnEsc](#closeonesc)
 * [closeOnOutsideClick](#closeonoutsideclick)
 * [closeOnScroll](#closeonscroll)
-* [constrainFocus](#constrainfocus)
+* [trapFocus](#trapfocus)
 * [allowMultiple](#allowmultiple)
 * [on](#on)
 
@@ -256,7 +256,7 @@ By default, targets are closed when the focus is shifted from an element inside
 the target to an element outside the target. Passing `false` as an option
 disables this behavior.
 
-> This setting is always `false` if [`constrainFocus`](#constrainfocus) is set
+> This setting is always `false` if [`trapFocus`](#trapfocus) is set
   to `true`.
 
 #### Example
@@ -312,7 +312,7 @@ ctrly({
 });
 ```
 
-### constrainFocus
+### trapFocus
 
 *Default:* `false`
 

@@ -1,4 +1,4 @@
 ctrly({
     closeOnScroll: true,
-    constrainFocus: true
+    trapFocus: true
 });
