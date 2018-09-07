@@ -30,7 +30,22 @@ export default [
         input: 'src/ctrly.js',
         output: {
             banner: banner(),
-            file: 'dist/ctrly.mjs',
+            file: 'dist/ctrly-es2015.js',
+            format: 'es'
+        },
+        plugins: [
+            cleanPlugin,
+            cleanupPlugin
+        ],
+        external: [
+            'domestique'
+        ]
+    },
+    {
+        input: 'src/ctrly.js',
+        output: {
+            banner: banner(),
+            file: 'dist/ctrly-module.js',
             format: 'es'
         },
         plugins: [
