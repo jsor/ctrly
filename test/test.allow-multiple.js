@@ -27,7 +27,7 @@ describe('ctrly(allowMultiple)', () => {
     it('allows multiple when configured', done => {
         const {control, target, control2, target2} = fixture.refs;
 
-        ctrlyInstance = ctrly({allowMultiple: true});
+        ctrlyInstance = ctrly({allowMultiple: true, closeOnBlur: false});
 
         ready(() => {
             assertClosed(control, target);

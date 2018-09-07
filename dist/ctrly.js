@@ -420,7 +420,7 @@
         }
         if (options.closeOnBlur && !options.trapFocus) {
           removeFuncs.push(on(target, 'focusout', function (e) {
-            if (e.relatedTarget && !target.contains(e.relatedTarget) && !closest(e.relatedTarget, controlSelector)) {
+            if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
               close(target, false);
             }
           }, {

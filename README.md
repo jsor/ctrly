@@ -339,6 +339,9 @@ This can be combined with the [context](#context) option to only allow multiple
 open targets inside a context element. 
 See the [accordion example](examples/accordion/) for a use-case.
 
+> To allow multiple open targets, [`closeOnBlur`](#closeonblur) must be set to
+  `false`.
+
 #### Example
 
 ```js

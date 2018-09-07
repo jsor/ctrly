@@ -27,7 +27,7 @@ describe('ctrly(context)', () => {
     it('handles target inside context', done => {
         const {control, target, control2, target2} = fixture.refs;
 
-        ctrlyInstance = ctrly({context: '.context'});
+        ctrlyInstance = ctrly({context: '.context', closeOnBlur: false});
 
         ready(() => {
             assertClosed(control, target);

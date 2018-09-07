@@ -192,9 +192,8 @@ export default function ctrly(opts = {}) {
             removeFuncs.push(
                 on(target, 'focusout', e => {
                     if (
-                        e.relatedTarget &&
-                        !target.contains(e.relatedTarget) &&
-                        !closest(e.relatedTarget, controlSelector)
+                        !e.relatedTarget ||
+                        !target.contains(e.relatedTarget)
                     ) {
                         close(target, false);
                     }
