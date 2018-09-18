@@ -190,11 +190,8 @@ export default function ctrly(opts = {}) {
 
         if (options.closeOnBlur && !options.trapFocus) {
             removeFuncs.push(
-                on(target, 'focusout', e => {
-                    if (
-                        !e.relatedTarget ||
-                        !target.contains(e.relatedTarget)
-                    ) {
+                on(document, 'focusin', e => {
+                    if (!target.contains(e.target)) {
                         close(target, false);
                     }
                 }, {capture: true, passive: true})

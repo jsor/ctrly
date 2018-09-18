@@ -40,7 +40,7 @@ describe('ctrly(closeOnBlur)', () => {
 
             focusableAfter.focus();
 
-            triggerCompatFocusEvent('focusout', target, focusableAfter);
+            triggerCompatFocusEvent('focusin', focusableAfter);
 
             assertClosed(control, target);
 
@@ -64,7 +64,7 @@ describe('ctrly(closeOnBlur)', () => {
 
             focusableAfter.focus();
 
-            triggerCompatFocusEvent('focusout', target, focusableAfter);
+            triggerCompatFocusEvent('focusin', focusableAfter);
 
             assertOpen(control, target);
 
