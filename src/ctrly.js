@@ -20,7 +20,8 @@ const defaultOptions = {
     closeOnScroll: false,
     trapFocus: false,
     allowMultiple: false,
-    on: null
+    on: null,
+    autoInit: true
 };
 
 function settings(opts) {
@@ -424,7 +425,9 @@ export default function ctrly(opts = {}) {
         }
     }
 
-    init();
+    if (options.autoInit) {
+        init();
+    }
 
     return {init, destroy};
 }

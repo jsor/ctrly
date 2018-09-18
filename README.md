@@ -186,6 +186,7 @@ The following options are available.
 * [trapFocus](#trapfocus)
 * [allowMultiple](#allowmultiple)
 * [on](#on)
+* [autoInit](#autoinit)
 
 ### selector
 
@@ -375,6 +376,24 @@ ctrly({
         }
     }
 });
+```
+
+### autoInit
+
+*Default:* `true`
+
+By default, initialization is done when calling `ctrly()`. Passing `false` as
+an option disables this behavior and the [`init()`](#init) method must be called
+manually.
+
+#### Example
+
+```js
+const { init } = ctrly({
+    autoInit: false
+});
+
+init();
 ```
 
 More information about the event callbacks can be found in the

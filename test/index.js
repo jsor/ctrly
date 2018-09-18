@@ -1,5 +1,6 @@
 import './test';
 import './test.allow-multiple';
+import './test.auto-init';
 import './test.close-on-blur';
 import './test.close-on-esc';
 import './test.close-on-outside-click';
