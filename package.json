@@ -19,8 +19,7 @@
   ],
   "main": "dist/ctrly.js",
   "browser": "dist/ctrly.min.js",
-  "module": "dist/ctrly-module.mjs",
-  "es2015": "src/ctrly-es2015.js",
+  "module": "dist/ctrly.esm.js",
   "files": [
     "dist",
     "src"

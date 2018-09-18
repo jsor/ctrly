@@ -287,7 +287,8 @@ var defaultOptions = {
   closeOnScroll: false,
   trapFocus: false,
   allowMultiple: false,
-  on: null
+  on: null,
+  autoInit: true
 };
 function settings(opts) {
   var extended = {};
@@ -413,8 +414,8 @@ function ctrly() {
       }));
     }
     if (options.closeOnBlur && !options.trapFocus) {
-      removeFuncs.push(on(target, 'focusout', function (e) {
-        if (!e.relatedTarget || !target.contains(e.relatedTarget)) {
+      removeFuncs.push(on(document, 'focusin', function (e) {
+        if (!target.contains(e.target)) {
           close(target, false);
         }
       }, {
@@ -583,7 +584,9 @@ function ctrly() {
       }
     }
   }
-  init();
+  if (options.autoInit) {
+    init();
+  }
   return {
     init: init,
     destroy: destroy
