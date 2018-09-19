@@ -1,6 +1,6 @@
 {
   "name": "ctrly",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Lightweight and dependency-free content toggling with a focus on accessibility.",
   "repository": "git@github.com:jsor/ctrly.git",
   "author": {
