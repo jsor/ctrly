@@ -392,27 +392,6 @@ function ctrly() {
   }
   function addEventListeners(control, target) {
     var removeFuncs = [];
-    var active = false;
-    var activate = function activate() {
-      active = true;
-    };
-    var deactivate = function deactivate() {
-      active = false;
-    };
-    if (options.closeOnOutsideClick || options.closeOnScroll) {
-      removeFuncs.push(on(target, 'mouseenter', activate, {
-        passive: true
-      }));
-      removeFuncs.push(on(target, 'mouseleave', deactivate, {
-        passive: true
-      }));
-      removeFuncs.push(on(target, 'touchstart', activate, {
-        passive: true
-      }));
-      removeFuncs.push(on(target, 'touchend', deactivate, {
-        passive: true
-      }));
-    }
     if (options.closeOnBlur && !options.trapFocus) {
       removeFuncs.push(on(document, 'focusin', function (e) {
         if (!target.contains(e.target)) {
@@ -432,7 +411,7 @@ function ctrly() {
     }
     if (options.closeOnOutsideClick) {
       removeFuncs.push(on(document, 'click', function (e) {
-        if (!active && keyCode(e) === 1 && !closest(e.target, controlSelector)) {
+        if (keyCode(e) === 1 && !target.contains(e.target) && !closest(e.target, controlSelector)) {
           close(target);
         }
       }, {
@@ -440,6 +419,25 @@ function ctrly() {
       }));
     }
     if (options.closeOnScroll) {
+      var active = false;
+      var activate = function activate() {
+        active = true;
+      };
+      var deactivate = function deactivate() {
+        active = false;
+      };
+      removeFuncs.push(on(target, 'mouseenter', activate, {
+        passive: true
+      }));
+      removeFuncs.push(on(target, 'mouseleave', deactivate, {
+        passive: true
+      }));
+      removeFuncs.push(on(target, 'touchstart', activate, {
+        passive: true
+      }));
+      removeFuncs.push(on(target, 'touchend', deactivate, {
+        passive: true
+      }));
       removeFuncs.push(on(window, 'scroll', function () {
         if (!active) {
           close(target);

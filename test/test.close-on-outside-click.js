@@ -44,8 +44,8 @@ describe('ctrly(closeOnOutsideClick)', () => {
         });
     });
 
-    it('does not close target on outside click after mouse enters target', done => {
-        const {control, target} = fixture.refs;
+    it('does not close target on click from within target', done => {
+        const {control, target, targetLink} = fixture.refs;
 
         ctrlyInstance = ctrly();
 
@@ -56,39 +56,9 @@ describe('ctrly(closeOnOutsideClick)', () => {
 
             assertOpen(control, target);
 
-            simulant.fire(target, 'mouseenter');
-
-            simulant.fire(document, 'click', {which: 1, button: 0});
+            simulant.fire(targetLink, 'click', {which: 1, button: 0});
 
             assertOpen(control, target);
-
-            done();
-        });
-    });
-
-    it('closes target on outside click after mouse leaves target', done => {
-        const {control, target} = fixture.refs;
-
-        ctrlyInstance = ctrly();
-
-        ready(() => {
-            assertClosed(control, target);
-
-            simulant.fire(control, 'click', {which: 1, button: 0});
-
-            assertOpen(control, target);
-
-            simulant.fire(target, 'mouseenter');
-
-            simulant.fire(document, 'click', {which: 1, button: 0});
-
-            assertOpen(control, target);
-
-            simulant.fire(target, 'mouseleave');
-
-            simulant.fire(document, 'click', {which: 1, button: 0});
-
-            assertClosed(control, target);
 
             done();
         });

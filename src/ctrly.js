@@ -164,31 +164,6 @@ export default function ctrly(opts = {}) {
     function addEventListeners(control, target) {
         const removeFuncs = [];
 
-        let active = false;
-
-        const activate = () => {
-            active = true;
-        };
-
-        const deactivate = () => {
-            active = false;
-        };
-
-        if (options.closeOnOutsideClick || options.closeOnScroll) {
-            removeFuncs.push(
-                on(target, 'mouseenter', activate, {passive: true})
-            );
-            removeFuncs.push(
-                on(target, 'mouseleave', deactivate, {passive: true})
-            );
-            removeFuncs.push(
-                on(target, 'touchstart', activate, {passive: true})
-            );
-            removeFuncs.push(
-                on(target, 'touchend', deactivate, {passive: true})
-            );
-        }
-
         if (options.closeOnBlur && !options.trapFocus) {
             removeFuncs.push(
                 on(document, 'focusin', e => {
@@ -213,10 +188,14 @@ export default function ctrly(opts = {}) {
             removeFuncs.push(
                 on(document, 'click', e => {
                     // Close only after click on document
-                    // - if currently not interacting with the target
                     // - if it's a left button mouse click
+                    // - if currently not interacting with the target
                     // - if the click did not originated from (within) a control
-                    if (!active && keyCode(e) === 1 && !closest(e.target, controlSelector)) {
+                    if (
+                        keyCode(e) === 1 &&
+                        !target.contains(e.target) &&
+                        !closest(e.target, controlSelector)
+                    ) {
                         close(target);
                     }
                 }, {passive: true})
@@ -224,6 +203,29 @@ export default function ctrly(opts = {}) {
         }
 
         if (options.closeOnScroll) {
+            let active = false;
+
+            const activate = () => {
+                active = true;
+            };
+
+            const deactivate = () => {
+                active = false;
+            };
+
+            removeFuncs.push(
+                on(target, 'mouseenter', activate, {passive: true})
+            );
+            removeFuncs.push(
+                on(target, 'mouseleave', deactivate, {passive: true})
+            );
+            removeFuncs.push(
+                on(target, 'touchstart', activate, {passive: true})
+            );
+            removeFuncs.push(
+                on(target, 'touchend', deactivate, {passive: true})
+            );
+
             removeFuncs.push(
                 on(window, 'scroll', () => {
                     if (!active) {
