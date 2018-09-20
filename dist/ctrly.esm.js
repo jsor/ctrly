@@ -536,32 +536,30 @@ function ctrly() {
         }
       });
     }
-    ready(function () {
-      find(controlSelector).forEach(function (control) {
-        var target = findTarget(control);
-        if (!target) {
-          resetControl(control);
-          return;
+    find(controlSelector).forEach(function (control) {
+      var target = findTarget(control);
+      if (!target) {
+        resetControl(control);
+        return;
+      }
+      control.setAttribute('aria-controls', target.id);
+      var labelledBy = findControls(target).map(function (control) {
+        if (!control.id) {
+          control.setAttribute('id', 'ctrly-control-' + ++idCounter);
         }
-        control.setAttribute('aria-controls', target.id);
-        var labelledBy = findControls(target).map(function (control) {
-          if (!control.id) {
-            control.setAttribute('id', 'ctrly-control-' + ++idCounter);
-          }
-          return control.id;
-        });
-        var newLabelledBy = (target.getAttribute('aria-labelledby') || '').split(' ').concat(labelledBy).filter(function (id, pos, arr) {
-          return id !== '' && arr.indexOf(id) === pos;
-        });
-        target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
-        if (control.getAttribute('aria-expanded') === 'true' || control.hasAttribute('data-ctrly-open')) {
-          open(control);
-          return;
-        }
-        control.setAttribute('aria-expanded', 'false');
-        target.setAttribute('aria-hidden', 'true');
-        target.removeAttribute('tabindex');
+        return control.id;
       });
+      var newLabelledBy = (target.getAttribute('aria-labelledby') || '').split(' ').concat(labelledBy).filter(function (id, pos, arr) {
+        return id !== '' && arr.indexOf(id) === pos;
+      });
+      target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
+      if (control.getAttribute('aria-expanded') === 'true' || control.hasAttribute('data-ctrly-open')) {
+        open(control);
+        return;
+      }
+      control.setAttribute('aria-expanded', 'false');
+      target.setAttribute('aria-hidden', 'true');
+      target.removeAttribute('tabindex');
     });
   }
   function destroy() {
@@ -583,7 +581,7 @@ function ctrly() {
     }
   }
   if (options.autoInit) {
-    init();
+    ready(init);
   }
   return {
     init: init,

@@ -361,46 +361,44 @@ export default function ctrly(opts = {}) {
             });
         }
 
-        ready(() => {
-            find(controlSelector).forEach(control => {
-                const target = findTarget(control);
+        find(controlSelector).forEach(control => {
+            const target = findTarget(control);
 
-                if (!target) {
-                    resetControl(control);
-                    return;
+            if (!target) {
+                resetControl(control);
+                return;
+            }
+
+            control.setAttribute('aria-controls', target.id);
+
+            const labelledBy = findControls(target).map(control => {
+                if (!control.id) {
+                    control.setAttribute('id', 'ctrly-control-' + ++idCounter);
                 }
 
-                control.setAttribute('aria-controls', target.id);
+                return control.id;
+            });
 
-                const labelledBy = findControls(target).map(control => {
-                    if (!control.id) {
-                        control.setAttribute('id', 'ctrly-control-' + ++idCounter);
-                    }
-
-                    return control.id;
+            const newLabelledBy = (target.getAttribute('aria-labelledby') || '')
+                .split(' ')
+                .concat(labelledBy)
+                .filter((id, pos, arr) => {
+                    return id !== '' && arr.indexOf(id) === pos;
                 });
 
-                const newLabelledBy = (target.getAttribute('aria-labelledby') || '')
-                    .split(' ')
-                    .concat(labelledBy)
-                    .filter((id, pos, arr) => {
-                        return id !== '' && arr.indexOf(id) === pos;
-                    });
+            target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
 
-                target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
+            if (
+                control.getAttribute('aria-expanded') === 'true' ||
+                control.hasAttribute('data-ctrly-open')
+            ) {
+                open(control);
+                return;
+            }
 
-                if (
-                    control.getAttribute('aria-expanded') === 'true' ||
-                    control.hasAttribute('data-ctrly-open')
-                ) {
-                    open(control);
-                    return;
-                }
-
-                control.setAttribute('aria-expanded', 'false');
-                target.setAttribute('aria-hidden', 'true');
-                target.removeAttribute('tabindex');
-            });
+            control.setAttribute('aria-expanded', 'false');
+            target.setAttribute('aria-hidden', 'true');
+            target.removeAttribute('tabindex');
         });
     }
 
@@ -428,7 +426,7 @@ export default function ctrly(opts = {}) {
     }
 
     if (options.autoInit) {
-        init();
+        ready(init);
     }
 
     return {init, destroy};
