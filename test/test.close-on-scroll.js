@@ -63,4 +63,30 @@ describe('ctrly(closeOnScroll)', () => {
             done();
         });
     });
+
+    it('does not close target on scroll when configured after mouse enters target', done => {
+        const {control, target} = fixture.refs;
+
+        ctrlyInstance = ctrly({closeOnScroll: true});
+
+        ready(() => {
+            assertClosed(control, target);
+
+            simulant.fire(control, 'click', {which: 1, button: 0});
+
+            assertOpen(control, target);
+
+            simulant.fire(target, 'mouseenter');
+
+            simulant.fire(window, 'scroll');
+
+            assertOpen(control, target);
+
+            simulant.fire(target, 'mouseleave');
+
+            assertOpen(control, target);
+
+            done();
+        });
+    });
 });
