@@ -7,9 +7,9 @@ export function assertOpen(control, target, msgPrefix = '') {
 
 export function assertClosed(control, target, msgPrefix = '') {
     assert.equal(control.getAttribute('aria-expanded'), 'false', msgPrefix + 'Closed: aria-expanded must be false');
-    assert.equal(target.getAttribute('aria-hidden'), 'true', msgPrefix + 'Open: aria-hidden must be true');
-    assert.isFalse(target.hasAttribute('data-ctrly-opened'), msgPrefix + 'Open: data-ctrly-opened must not be set');
-    assert.isFalse(target.hasAttribute('tabindex'), msgPrefix + 'Open: tabindex must not be set');
+    assert.equal(target.getAttribute('aria-hidden'), 'true', msgPrefix + 'Closed: aria-hidden must be true');
+    assert.isFalse(target.hasAttribute('data-ctrly-opened'), msgPrefix + 'Closed: data-ctrly-opened must not be set');
+    assert.isFalse(target.hasAttribute('tabindex'), msgPrefix + 'Closed: tabindex must not be set');
 }
 
 export function triggerCompatFocusEvent(type, target) {
