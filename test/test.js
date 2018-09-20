@@ -550,6 +550,31 @@ describe('ctrly()', () => {
         });
     });
 
+    it('closes all targets on closeAll()', done => {
+        fixture = fixtureDefault();
+
+        const {control, target} = fixture.refs;
+
+        ctrlyInstance = ctrly();
+
+        ready(() => {
+            simulant.fire(control, 'click', {which: 1, button: 0});
+
+            assertOpen(control, target);
+
+            ctrlyInstance.closeAll();
+            ctrlyInstance.closeAll(); // Intentionally call destroy() again
+
+            assertClosed(control, target);
+
+            simulant.fire(control, 'click', {which: 1, button: 0});
+
+            assertOpen(control, target);
+
+            done();
+        });
+    });
+
     it('resets elements on destroy()', done => {
         fixture = fixtureDefault();
 
@@ -565,6 +590,10 @@ describe('ctrly()', () => {
             ctrlyInstance.destroy();
             ctrlyInstance.destroy(); // Intentionally call destroy() again
             ctrlyInstance = null;
+
+            assertUninitialized(control, target);
+
+            simulant.fire(control, 'click', {which: 1, button: 0});
 
             assertUninitialized(control, target);
 

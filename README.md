@@ -132,12 +132,27 @@ API
 The return value of the `ctrly()` function is an object with the following 
 functions.
 
+* [closeAll](#closeall)
 * [destroy](#destroy)
 * [init](#init)
 
+### closeAll
+
+This function closes all open targets.
+
+#### Example
+
+```js
+const { closeAll } = ctrly();
+
+closeAll();
+
+```
+
 ### destroy
 
-This function closes all open targets and unbinds all event listeners.
+This function reverts all elements to their initial state and unbinds all event
+listeners.
 
 #### Example
 

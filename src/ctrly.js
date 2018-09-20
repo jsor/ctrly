@@ -402,20 +402,25 @@ export default function ctrly(opts = {}) {
         });
     }
 
-    function destroy() {
-        if (removeControlClick) {
+    function reset(fullReset) {
+        if (fullReset && removeControlClick) {
             removeControlClick();
             removeControlClick = null;
         }
 
         find(controlSelector).forEach(control => {
-            resetControl(control);
+            if (fullReset) {
+                resetControl(control);
+            }
 
             const target = findTarget(control);
 
             if (target) {
                 close(target, false);
-                target.removeAttribute('aria-hidden');
+
+                if (fullReset) {
+                    target.removeAttribute('aria-hidden');
+                }
             }
         });
 
@@ -428,9 +433,21 @@ export default function ctrly(opts = {}) {
         }
     }
 
+    function closeAll() {
+        reset(false);
+    }
+
+    function destroy() {
+        reset(true);
+    }
+
     if (options.autoInit) {
         ready(init);
     }
 
-    return {init, destroy};
+    return {
+        closeAll,
+        destroy,
+        init
+    };
 }

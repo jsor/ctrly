@@ -562,17 +562,21 @@ function ctrly() {
       target.removeAttribute('tabindex');
     });
   }
-  function destroy() {
-    if (removeControlClick) {
+  function reset(fullReset) {
+    if (fullReset && removeControlClick) {
       removeControlClick();
       removeControlClick = null;
     }
     find(controlSelector).forEach(function (control) {
-      resetControl(control);
+      if (fullReset) {
+        resetControl(control);
+      }
       var target = findTarget(control);
       if (target) {
         close(target, false);
-        target.removeAttribute('aria-hidden');
+        if (fullReset) {
+          target.removeAttribute('aria-hidden');
+        }
       }
     });
     for (var id in instances) {
@@ -582,12 +586,19 @@ function ctrly() {
       }
     }
   }
+  function closeAll() {
+    reset(false);
+  }
+  function destroy() {
+    reset(true);
+  }
   if (options.autoInit) {
     ready(init);
   }
   return {
-    init: init,
-    destroy: destroy
+    closeAll: closeAll,
+    destroy: destroy,
+    init: init
   };
 }
 
