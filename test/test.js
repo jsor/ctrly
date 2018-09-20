@@ -9,7 +9,7 @@ import {
     fixtureMissingAriaControls,
     fixtureMissingAriaControlsExpanded
 } from './fixture';
-import {assertOpen, assertClosed} from './helper';
+import {assertOpen, assertClosed, assertUninitialized} from './helper';
 
 describe('ctrly()', () => {
     let fixture;
@@ -566,7 +566,7 @@ describe('ctrly()', () => {
             ctrlyInstance.destroy(); // Intentionally call destroy() again
             ctrlyInstance = null;
 
-            assertClosed(control, target);
+            assertUninitialized(control, target);
 
             done();
         });
@@ -586,14 +586,14 @@ describe('ctrly()', () => {
 
             ctrlyInstance.destroy();
 
-            assertClosed(control, target);
+            assertUninitialized(control, target);
 
             ctrlyInstance.init();
             ctrlyInstance.init(); // Intentionally call init() again
 
             simulant.fire(control, 'click', {which: 1, button: 0});
 
-            assertOpen(control, target);
+            assertOpen(control, target, 'After re-init ');
 
             done();
         });

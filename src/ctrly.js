@@ -409,10 +409,13 @@ export default function ctrly(opts = {}) {
         }
 
         find(controlSelector).forEach(control => {
+            resetControl(control);
+
             const target = findTarget(control);
 
             if (target) {
                 close(target, false);
+                target.removeAttribute('aria-hidden');
             }
         });
 

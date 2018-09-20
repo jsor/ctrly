@@ -574,9 +574,11 @@
           removeControlClick = null;
         }
         find(controlSelector).forEach(function (control) {
+          resetControl(control);
           var target = findTarget(control);
           if (target) {
             close(target, false);
+            target.removeAttribute('aria-hidden');
           }
         });
         for (var id in instances) {

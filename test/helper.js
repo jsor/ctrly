@@ -1,3 +1,11 @@
+export function assertUninitialized(control, target, msgPrefix = '') {
+    assert.isFalse(control.hasAttribute('aria-controls'), msgPrefix + 'Uninitialized: aria-controls must not be set');
+    assert.isFalse(control.hasAttribute('aria-expanded'), msgPrefix + 'Uninitialized: aria-expanded must not be set');
+    assert.isFalse(target.hasAttribute('aria-hidden'), msgPrefix + 'Uninitialized: aria-hidden must not be set');
+    assert.isFalse(target.hasAttribute('data-ctrly-opened'), msgPrefix + 'Uninitialized: data-ctrly-opened must not be set');
+    assert.isFalse(target.hasAttribute('tabindex'), msgPrefix + 'Uninitialized: tabindex must not be set');
+}
+
 export function assertOpen(control, target, msgPrefix = '') {
     assert.equal(control.getAttribute('aria-expanded'), 'true', msgPrefix + 'Open: aria-expanded must be true');
     assert.equal(target.getAttribute('aria-hidden'), 'false', msgPrefix + 'Open: aria-hidden must be false');
