@@ -7,7 +7,8 @@ import {
     fixtureInvalidAriaControls,
     fixtureInvalidAriaControlsExpanded,
     fixtureMissingAriaControls,
-    fixtureMissingAriaControlsExpanded
+    fixtureMissingAriaControlsExpanded,
+    fixtureNonButton
 } from './fixture';
 import {assertOpen, assertClosed, assertUninitialized} from './helper';
 
@@ -623,6 +624,41 @@ describe('ctrly()', () => {
             simulant.fire(control, 'click', {which: 1, button: 0});
 
             assertOpen(control, target, 'After re-init ');
+
+            done();
+        });
+    });
+
+    it('handles non-<button> elements', done => {
+        fixture = fixtureNonButton();
+
+        const {control, target} = fixture.refs;
+
+        ctrlyInstance = ctrly();
+
+        ready(() => {
+            assert.equal(control.getAttribute('role'), 'button');
+            assert.equal(control.getAttribute('tabindex'), '0');
+
+            assertClosed(control, target);
+            assert.equal(control.getAttribute('aria-pressed'), 'false', 'Closed: aria-pressed must be false');
+
+            simulant.fire(control, 'click', {which: 1, button: 0});
+
+            assertOpen(control, target);
+            assert.equal(control.getAttribute('aria-pressed'), 'true', 'Open: aria-pressed must be true');
+
+            simulant.fire(control, 'click', {which: 1, button: 0});
+
+            assertClosed(control, target);
+
+            simulant.fire(control, 'keypress', {which: 32, button: 0});
+
+            assertOpen(control, target);
+
+            simulant.fire(control, 'keypress', {which: 13, button: 0});
+
+            assertClosed(control, target);
 
             done();
         });

@@ -66,6 +66,15 @@ export function fixtureMultiple() {
     `);
 }
 
+export function fixtureNonButton() {
+    return fixture(`
+<span ref="control" data-ctrly="target">Toggle</span>
+<section ref="target" id="target">
+    Hello!
+</section>
+    `);
+}
+
 export function fixtureInvalidAriaControls() {
     return fixture('<button data-ctrly ref="control" aria-controls="invalid-target" aria-expanded="false">Toggle</button>');
 }

@@ -5,6 +5,7 @@ import {
     dispatch,
     find,
     focus,
+    isTabbable,
     on,
     ready,
     tabbable
@@ -54,6 +55,7 @@ function findTarget(control) {
 }
 
 function resetControl(control) {
+    control.removeAttribute('aria-pressed');
     control.removeAttribute('aria-controls');
     control.removeAttribute('aria-expanded');
 }
@@ -125,6 +127,10 @@ export default function ctrly(opts = {}) {
         }
 
         findControls(target).forEach(c => {
+            if (c.tagName.toLowerCase() !== 'button') {
+                c.setAttribute('aria-pressed', 'false');
+            }
+
             c.setAttribute('aria-expanded', 'false');
         });
 
@@ -297,6 +303,10 @@ export default function ctrly(opts = {}) {
         };
 
         findControls(target).forEach(c => {
+            if (c.tagName.toLowerCase() !== 'button') {
+                c.setAttribute('aria-pressed', 'true');
+            }
+
             c.setAttribute('aria-expanded', 'true');
         });
 
@@ -310,53 +320,65 @@ export default function ctrly(opts = {}) {
         return target;
     }
 
+    function toggle(e, control) {
+        const target = findTarget(control);
+
+        if (!target) {
+            // Allow controls without a value for data-ctrly
+            // to close a target if it's a child element
+            if (close(findParentTarget(control))) {
+                e.preventDefault();
+            }
+
+            return;
+        }
+
+        if (control.getAttribute('aria-expanded') === 'true') {
+            if (close(target)) {
+                e.preventDefault();
+            }
+
+            return;
+        }
+
+        if (!options.allowMultiple) {
+            closeOthers(target);
+        }
+
+        open(control);
+
+        if (target) {
+            e.preventDefault();
+
+            if (options.focusTarget) {
+                focus(
+                    tabbable(target)[0] || target
+                );
+            }
+
+            // Reset scrolling after focusing
+            target.scrollTop = 0;
+            target.scrollLeft = 0;
+        }
+    }
+
     let removeControlClick;
+    let removeControlKeypress;
 
     function init() {
         if (!removeControlClick) {
             removeControlClick = delegate(document, 'click', controlSelector, (e, control) => {
-                if (keyCode(e) !== 1) {
-                    return;
+                if (keyCode(e) === 1 /* Left mouse button */) {
+                    toggle(e, control);
                 }
+            });
 
-                const target = findTarget(control);
-
-                if (!target) {
-                    // Allow controls without a value for data-ctrly
-                    // to close a target if it's a child element
-                    if (close(findParentTarget(control))) {
-                        e.preventDefault();
-                    }
-
-                    return;
-                }
-
-                if (control.getAttribute('aria-expanded') === 'true') {
-                    if (close(target)) {
-                        e.preventDefault();
-                    }
-
-                    return;
-                }
-
-                if (!options.allowMultiple) {
-                    closeOthers(target);
-                }
-
-                open(control);
-
-                if (target) {
-                    e.preventDefault();
-
-                    if (options.focusTarget) {
-                        focus(
-                            tabbable(target)[0] || target
-                        );
-                    }
-
-                    // Reset scrolling after focusing
-                    target.scrollTop = 0;
-                    target.scrollLeft = 0;
+            removeControlKeypress = delegate(document, 'keypress', controlSelector, (e, control) => {
+                if (
+                    keyCode(e) === 13 /* Enter */ ||
+                    keyCode(e) === 32 /* Space */
+                ) {
+                    toggle(e, control);
                 }
             });
         }
@@ -367,6 +389,16 @@ export default function ctrly(opts = {}) {
             if (!target) {
                 resetControl(control);
                 return;
+            }
+
+            if (control.tagName.toLowerCase() !== 'button') {
+                if (!control.hasAttribute('role')) {
+                    control.setAttribute('role', 'button');
+                }
+
+                if (!isTabbable(control)) {
+                    control.setAttribute('tabindex', '0');
+                }
             }
 
             control.setAttribute('aria-controls', target.id);
@@ -396,6 +428,10 @@ export default function ctrly(opts = {}) {
                 return;
             }
 
+            if (control.tagName.toLowerCase() !== 'button') {
+                control.setAttribute('aria-pressed', 'false');
+            }
+
             control.setAttribute('aria-expanded', 'false');
             target.setAttribute('aria-hidden', 'true');
             target.removeAttribute('tabindex');
@@ -406,6 +442,8 @@ export default function ctrly(opts = {}) {
         if (fullReset && removeControlClick) {
             removeControlClick();
             removeControlClick = null;
+            removeControlKeypress();
+            removeControlKeypress = null;
         }
 
         find(controlSelector).forEach(control => {

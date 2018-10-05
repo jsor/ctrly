@@ -17,7 +17,7 @@ It can be used to implement dropdown or off-canvas menus, modals, accordions
 and similar UI elements. Example implementations can be found in the 
 [`examples/` directory](examples/).
 
-Minified and gzipped, the total footprint weights about 2.7kB.
+Minified and gzipped, the total footprint weights about 2.8kB.
 
 Installation
 ------------
@@ -85,7 +85,8 @@ The fully generated HTML looks like the following.
     data-ctrly="my-target"
     id="ctrly-control-1"
     aria-controls="my-target"
-    aria-expanded="false">
+    aria-expanded="false"
+>
     Toggle
 </button>
 <section
@@ -124,6 +125,30 @@ added by ctrly.
 .control-selector:not([aria-controls]) {
     display: none;
 }
+```
+
+While is is highly recommended to use `<button>` elements as controls, ctrly
+also supports other HTML elements.
+
+```html
+<span data-ctrly="my-target">Toggle</button>
+```
+
+The fully generated HTML looks like the following (note the additional 
+`tabindex`, `role` and `aria-pressed` attributes).
+
+```html
+<span
+    data-ctrly="my-target"
+    id="ctrly-control-1"
+    aria-controls="my-target"
+    aria-expanded="false"
+    tabindex="0"
+    role="button"
+    aria-pressed="false"
+>
+    Toggle
+</span>
 ```
 
 API
