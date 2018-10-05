@@ -42,9 +42,12 @@ describe('ctrly(closeOnBlur)', () => {
 
             triggerCompatFocusEvent('focusin', focusableAfter);
 
-            assertClosed(control, target);
+            // Closing on blur is delayed...
+            setTimeout(() => {
+                assertClosed(control, target);
 
-            done();
+                done();
+            }, 100);
         });
     });
 
@@ -66,9 +69,12 @@ describe('ctrly(closeOnBlur)', () => {
 
             triggerCompatFocusEvent('focusin', focusableAfter);
 
-            assertOpen(control, target);
+            // Closing on blur is delayed...
+            setTimeout(() => {
+                assertOpen(control, target);
 
-            done();
+                done();
+            }, 100);
         });
     });
 });

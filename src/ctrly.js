@@ -174,7 +174,13 @@ export default function ctrly(opts = {}) {
             removeFuncs.push(
                 on(document, 'focusin', e => {
                     if (!target.contains(e.target)) {
-                        close(target, false);
+                        // Delay closing target since the "focusin" event is
+                        // triggered before the control click handlers.
+                        // If focus is shifted to a control by clicking on it,
+                        // the click handler must have precedence.
+                        setTimeout(() => {
+                            close(target, false);
+                        }, 0);
                     }
                 }, {capture: true, passive: true})
             );
