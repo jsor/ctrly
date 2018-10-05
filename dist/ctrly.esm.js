@@ -1,5 +1,5 @@
 /*!
- * ctrly v0.5.0
+ * ctrly v0.6.0
  * Copyright (c) 2018 Jan Sorgalla
  * License: MIT
  */
@@ -50,14 +50,6 @@ function focus(element) {
   }
 }
 
-function find(selector, element) {
-  var context = arguments.length > 1 ? element : document;
-  if (!context || typeof context.querySelectorAll !== 'function') {
-    return [];
-  }
-  return [].slice.call(context.querySelectorAll(selector));
-}
-
 function matches(element, selector) {
   if (!element) {
     return false;
@@ -83,6 +75,72 @@ function closest(element, selector) {
     element = element.parentNode;
   } while (element && element.nodeType === 1);
   return null;
+}
+
+function find(selector, element) {
+  var context = arguments.length > 1 ? element : document;
+  if (!context || typeof context.querySelectorAll !== 'function') {
+    return [];
+  }
+  return [].slice.call(context.querySelectorAll(selector));
+}
+
+var selector = ['a[href]',
+'area[href]', 'input', 'select', 'textarea', 'button', 'iframe', 'object', 'audio[controls]', 'video[controls]', '[contenteditable]', '[tabindex]'].join(',');
+var inputNodeNameRegexp = /^(input|select|textarea|button|object)$/;
+function focusableFilter(element) {
+  var nodeName = element.nodeName.toLowerCase();
+  if (nodeName === 'area') {
+    return isValidArea(element);
+  }
+  if (element.disabled) {
+    return false;
+  }
+  if (inputNodeNameRegexp.test(nodeName)) {
+    var fieldset = closest(element, 'fieldset');
+    if (fieldset && fieldset.disabled) {
+      return false;
+    }
+  }
+  return visible(element);
+}
+function tabbableFilter(element) {
+  var index = tabIndex(element);
+  return focusableFilter(element) && index >= 0;
+}
+function compare(a, b) {
+  var aIndex = tabIndex(a, true);
+  var bIndex = tabIndex(b, true);
+  if (aIndex === bIndex) {
+    return a.compareDocumentPosition(b) & 2 ? 1 : -1;
+  }
+  return aIndex - bIndex;
+}
+function isValidArea(element) {
+  var map = element.parentNode;
+  var mapName = map.name;
+  if (!element.href || !mapName || map.nodeName.toLowerCase() !== 'map') {
+    return false;
+  }
+  var images = find("img[usemap=\"#".concat(mapName, "\"]"));
+  return images.length > 0 && visible(images[0]);
+}
+function visible(element) {
+  var style = getComputedStyle(element);
+  return (
+    style.visibility !== 'hidden' && style.visibility !== 'collapse' && style.display !== 'none' && parents(element).every(function (el) {
+      return getComputedStyle(el).display !== 'none';
+    })
+  );
+}
+function tabIndex(element) {
+  var positiveOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+  var index = parseInt(element.getAttribute('tabindex'), 10);
+  return isNaN(index) ? 0 : positiveOnly && index < 0 ? 0 : index;
+}
+
+function isTabbable(element) {
+  return matches(element, selector) && tabbableFilter(element);
 }
 
 var supportedOptions;
@@ -219,60 +277,6 @@ function ready(listener) {
   }));
 }
 
-var selector = ['a[href]',
-'area[href]', 'input', 'select', 'textarea', 'button', 'iframe', 'object', 'audio[controls]', 'video[controls]', '[contenteditable]', '[tabindex]'].join(',');
-var inputNodeNameRegexp = /^(input|select|textarea|button|object)$/;
-function focusableFilter(element) {
-  var nodeName = element.nodeName.toLowerCase();
-  if (nodeName === 'area') {
-    return isValidArea(element);
-  }
-  if (element.disabled) {
-    return false;
-  }
-  if (inputNodeNameRegexp.test(nodeName)) {
-    var fieldset = closest(element, 'fieldset');
-    if (fieldset && fieldset.disabled) {
-      return false;
-    }
-  }
-  return visible(element);
-}
-function tabbableFilter(element) {
-  var index = tabIndex(element);
-  return focusableFilter(element) && index >= 0;
-}
-function compare(a, b) {
-  var aIndex = tabIndex(a, true);
-  var bIndex = tabIndex(b, true);
-  if (aIndex === bIndex) {
-    return a.compareDocumentPosition(b) & 2 ? 1 : -1;
-  }
-  return aIndex - bIndex;
-}
-function isValidArea(element) {
-  var map = element.parentNode;
-  var mapName = map.name;
-  if (!element.href || !mapName || map.nodeName.toLowerCase() !== 'map') {
-    return false;
-  }
-  var images = find("img[usemap=\"#".concat(mapName, "\"]"));
-  return images.length > 0 && visible(images[0]);
-}
-function visible(element) {
-  var style = getComputedStyle(element);
-  return (
-    style.visibility !== 'hidden' && style.visibility !== 'collapse' && style.display !== 'none' && parents(element).every(function (el) {
-      return getComputedStyle(el).display !== 'none';
-    })
-  );
-}
-function tabIndex(element) {
-  var positiveOnly = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-  var index = parseInt(element.getAttribute('tabindex'), 10);
-  return isNaN(index) ? 0 : positiveOnly && index < 0 ? 0 : index;
-}
-
 function tabbable(element) {
   return find(selector, arguments.length > 0 ? element : document).filter(tabbableFilter).sort(compare);
 }
@@ -312,6 +316,7 @@ function findTarget(control) {
   return document.getElementById(control.getAttribute('aria-controls') || control.getAttribute('data-ctrly'));
 }
 function resetControl(control) {
+  control.removeAttribute('aria-pressed');
   control.removeAttribute('aria-controls');
   control.removeAttribute('aria-expanded');
 }
@@ -368,6 +373,9 @@ function ctrly() {
       destroy();
     }
     findControls(target).forEach(function (c) {
+      if (c.tagName.toLowerCase() !== 'button') {
+        c.setAttribute('aria-pressed', 'false');
+      }
       c.setAttribute('aria-expanded', 'false');
     });
     target.removeAttribute('data-ctrly-opened');
@@ -395,7 +403,9 @@ function ctrly() {
     if (options.closeOnBlur && !options.trapFocus) {
       removeFuncs.push(on(document, 'focusin', function (e) {
         if (!target.contains(e.target)) {
-          close(target, false);
+          setTimeout(function () {
+            close(target, false);
+          }, 0);
         }
       }, {
         capture: true,
@@ -494,6 +504,9 @@ function ctrly() {
       destroy: addEventListeners(control, target)
     };
     findControls(target).forEach(function (c) {
+      if (c.tagName.toLowerCase() !== 'button') {
+        c.setAttribute('aria-pressed', 'true');
+      }
       c.setAttribute('aria-expanded', 'true');
     });
     target.setAttribute('data-ctrly-opened', '');
@@ -502,38 +515,49 @@ function ctrly() {
     trigger(target, 'opened');
     return target;
   }
+  function toggle(e, control) {
+    var target = findTarget(control);
+    if (!target) {
+      if (close(findParentTarget(control))) {
+        e.preventDefault();
+      }
+      return;
+    }
+    if (control.getAttribute('aria-expanded') === 'true') {
+      if (close(target)) {
+        e.preventDefault();
+      }
+      return;
+    }
+    if (!options.allowMultiple) {
+      closeOthers(target);
+    }
+    open(control);
+    if (target) {
+      e.preventDefault();
+      if (options.focusTarget) {
+        focus(tabbable(target)[0] || target);
+      }
+      target.scrollTop = 0;
+      target.scrollLeft = 0;
+    }
+  }
   var removeControlClick;
+  var removeControlKeypress;
   function init() {
     if (!removeControlClick) {
       removeControlClick = delegate(document, 'click', controlSelector, function (e, control) {
-        if (keyCode(e) !== 1) {
-          return;
-        }
-        var target = findTarget(control);
-        if (!target) {
-          if (close(findParentTarget(control))) {
-            e.preventDefault();
+        if (keyCode(e) === 1
+        ) {
+            toggle(e, control);
           }
-          return;
-        }
-        if (control.getAttribute('aria-expanded') === 'true') {
-          if (close(target)) {
-            e.preventDefault();
+      });
+      removeControlKeypress = delegate(document, 'keypress', controlSelector, function (e, control) {
+        if (keyCode(e) === 13
+        || keyCode(e) === 32
+        ) {
+            toggle(e, control);
           }
-          return;
-        }
-        if (!options.allowMultiple) {
-          closeOthers(target);
-        }
-        open(control);
-        if (target) {
-          e.preventDefault();
-          if (options.focusTarget) {
-            focus(tabbable(target)[0] || target);
-          }
-          target.scrollTop = 0;
-          target.scrollLeft = 0;
-        }
       });
     }
     find(controlSelector).forEach(function (control) {
@@ -541,6 +565,14 @@ function ctrly() {
       if (!target) {
         resetControl(control);
         return;
+      }
+      if (control.tagName.toLowerCase() !== 'button') {
+        if (!control.hasAttribute('role')) {
+          control.setAttribute('role', 'button');
+        }
+        if (!isTabbable(control)) {
+          control.setAttribute('tabindex', '0');
+        }
       }
       control.setAttribute('aria-controls', target.id);
       var labelledBy = findControls(target).map(function (control) {
@@ -557,6 +589,9 @@ function ctrly() {
         open(control);
         return;
       }
+      if (control.tagName.toLowerCase() !== 'button') {
+        control.setAttribute('aria-pressed', 'false');
+      }
       control.setAttribute('aria-expanded', 'false');
       target.setAttribute('aria-hidden', 'true');
       target.removeAttribute('tabindex');
@@ -566,6 +601,8 @@ function ctrly() {
     if (fullReset && removeControlClick) {
       removeControlClick();
       removeControlClick = null;
+      removeControlKeypress();
+      removeControlKeypress = null;
     }
     find(controlSelector).forEach(function (control) {
       if (fullReset) {
