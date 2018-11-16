@@ -80,7 +80,7 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-istanbul": "^2.0.1",
     "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-uglify": "^6.0.0",
+    "rollup-plugin-terser": "^3.0.0",
     "simulant": "^0.2.2",
     "size-limit": "^0.21.0",
     "xo": "^0.23.0"

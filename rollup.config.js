@@ -2,7 +2,7 @@ import clean from 'rollup-plugin-clean';
 import resolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import cleanup from 'rollup-plugin-cleanup';
-import {uglify} from 'rollup-plugin-uglify';
+import {terser} from 'rollup-plugin-terser';
 
 const pkg = require('./package.json');
 
@@ -68,7 +68,7 @@ export default [
             resolvePlugin,
             babelPlugin,
             cleanupPlugin,
-            uglify({
+            terser({
                 output: {
                     comments: 'all'
                 }
