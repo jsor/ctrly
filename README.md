@@ -285,7 +285,7 @@ behavior.
 
 ```js
 ctrly({
-    closeOnScroll: false
+    focusTarget: false
 });
 ```
 
@@ -364,7 +364,7 @@ Passing `true` as an option ensures that <kbd>TAB</kbd> and
 
 ```js
 ctrly({
-    closeOnScroll: false
+    trapFocus: true
 });
 ```
 
