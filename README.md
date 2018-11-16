@@ -448,7 +448,7 @@ There are 2 ways to bind listeners to the events.
 
 1. Through the [`on` option](#on).
 2. Through DOM event listeners on the target element (the DOM event names are
-   prefixed with `ctrly:` eg. `ctrly:open`).
+   prefixed with `ctrly:`, eg. `ctrly:open`).
 
 The following events are available.
 
