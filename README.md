@@ -50,7 +50,8 @@ Usage
 A typical setup includes a **control** (usually a `<button>` element) which
 toggles the visibility of a **target** element.
 
-The control must have a `data-ctrly` which must contain the ID of the target.
+The control must have a `data-ctrly` attribute which must contain the ID of the
+target.
 
 ```html
 <button data-ctrly="my-target">Toggle</button>
@@ -63,9 +64,10 @@ To initialize all controls, the `ctrly()` function must be called once.
 ctrly();
 ```
 
-ctrly then adds all required ARIA attributes, the `aria-controls` and 
-`aria-expanded` attributes to the control and the `aria-hidden` and
-`aria-labelledby` to the target.
+ctrly then adds all required ARIA attributes:
+
+* The `aria-controls` and `aria-expanded` attributes to the control.
+* The `aria-hidden` and `aria-labelledby` to the target.
 
 If the control does not have an `id` attribute, ctrly will add an auto-generated
 ID.
@@ -119,7 +121,7 @@ added by ctrly.
 }
 ```
 
-While is is highly recommended to use `<button>` elements as controls, ctrly
+While it is highly recommended to use `<button>` elements as controls, ctrly
 also supports other HTML elements.
 
 ```html
