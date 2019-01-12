@@ -19,7 +19,7 @@
   ],
   "main": "dist/ctrly.js",
   "browser": "dist/ctrly.min.js",
-  "module": "dist/ctrly.esm.js",
+  "module": "dist/ctrly.mjs",
   "files": [
     "dist",
     "src"
