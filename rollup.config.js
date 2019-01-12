@@ -30,7 +30,7 @@ export default [
         input: 'src/ctrly.js',
         output: {
             banner: banner(),
-            file: 'dist/ctrly.esm.js',
+            file: pkg.module,
             format: 'es'
         },
         plugins: [
@@ -44,7 +44,7 @@ export default [
         input: 'src/ctrly.js',
         output: {
             banner: banner(),
-            file: 'dist/ctrly.js',
+            file: pkg.main,
             format: 'umd',
             name: 'ctrly'
         },
@@ -59,7 +59,7 @@ export default [
         input: 'src/ctrly.js',
         output: {
             banner: banner(),
-            file: 'dist/ctrly.min.js',
+            file: pkg.browser,
             format: 'umd',
             name: 'ctrly'
         },
