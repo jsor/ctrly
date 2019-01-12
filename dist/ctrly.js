@@ -1,6 +1,6 @@
 /*!
  * ctrly v0.6.0
- * Copyright (c) 2018 Jan Sorgalla
+ * Copyright (c) 2018-2019 Jan Sorgalla
  * License: MIT
  */
 (function (global, factory) {

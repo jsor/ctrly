@@ -10,7 +10,7 @@ const now = new Date();
 const banner = () => {
     return '/*!\n' +
         ' * ' + (pkg.title || pkg.name) + ' v' + pkg.version + '\n' +
-        ' * Copyright (c) ' + now.getFullYear() + ' ' + pkg.author.name + '\n' +
+        ' * Copyright (c) 2018-' + now.getFullYear() + ' ' + pkg.author.name + '\n' +
         ' * License: ' + pkg.license + '\n' +
         ' */';
 };
