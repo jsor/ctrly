@@ -17,7 +17,7 @@ It can be used to implement dropdown or off-canvas menus, modals, accordions
 and similar UI elements. Example implementations can be found in the 
 [`examples/` directory](examples/).
 
-**Demo**s: [**Accordion**](https://sorgalla.com/ctrly/examples/accordion/) • [**Dropdown**](https://sorgalla.com/ctrly/examples/dropdown/) • [**Offcanvas**](https://sorgalla.com/ctrly/examples/offcanvas/)
+**Demos**: [**Accordion**](https://sorgalla.com/ctrly/examples/accordion/) • [**Dropdown**](https://sorgalla.com/ctrly/examples/dropdown/) • [**Offcanvas**](https://sorgalla.com/ctrly/examples/offcanvas/)
 
 Minified and gzipped, the total footprint weights about 2.8kB.
 
