@@ -414,6 +414,9 @@ ctrly({
 });
 ```
 
+More information about the event callbacks can be found in the
+[Events section](#events).
+
 ### autoInit
 
 *Default:* `true`
@@ -431,9 +434,6 @@ const { init } = ctrly({
 
 init();
 ```
-
-More information about the event callbacks can be found in the
-[Events section](#events).
 
 Events
 ------
