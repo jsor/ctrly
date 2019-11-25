@@ -543,7 +543,7 @@ function ctrly() {
     }
   }
   var removeControlClick;
-  var removeControlKeypress;
+  var removeControlKeydown;
   function init() {
     if (!removeControlClick) {
       removeControlClick = delegate(document, 'click', controlSelector, function (e, control) {
@@ -552,7 +552,7 @@ function ctrly() {
             toggle(e, control);
           }
       });
-      removeControlKeypress = delegate(document, 'keypress', controlSelector, function (e, control) {
+      removeControlKeydown = delegate(document, 'keydown', controlSelector, function (e, control) {
         if (keyCode(e) === 13
         || keyCode(e) === 32
         ) {
@@ -601,8 +601,8 @@ function ctrly() {
     if (fullReset && removeControlClick) {
       removeControlClick();
       removeControlClick = null;
-      removeControlKeypress();
-      removeControlKeypress = null;
+      removeControlKeydown();
+      removeControlKeydown = null;
     }
     find(controlSelector).forEach(function (control) {
       if (fullReset) {

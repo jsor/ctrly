@@ -6,8 +6,8 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global.ctrly = factory());
-}(this, (function () { 'use strict';
+    (global = global || self, global.ctrly = factory());
+}(this, function () { 'use strict';
 
     function activeElement() {
       try {
@@ -549,7 +549,7 @@
         }
       }
       var removeControlClick;
-      var removeControlKeypress;
+      var removeControlKeydown;
       function init() {
         if (!removeControlClick) {
           removeControlClick = delegate(document, 'click', controlSelector, function (e, control) {
@@ -558,7 +558,7 @@
                 toggle(e, control);
               }
           });
-          removeControlKeypress = delegate(document, 'keypress', controlSelector, function (e, control) {
+          removeControlKeydown = delegate(document, 'keydown', controlSelector, function (e, control) {
             if (keyCode(e) === 13
             || keyCode(e) === 32
             ) {
@@ -607,8 +607,8 @@
         if (fullReset && removeControlClick) {
           removeControlClick();
           removeControlClick = null;
-          removeControlKeypress();
-          removeControlKeypress = null;
+          removeControlKeydown();
+          removeControlKeydown = null;
         }
         find(controlSelector).forEach(function (control) {
           if (fullReset) {
@@ -647,4 +647,4 @@
 
     return ctrly;
 
-})));
+}));

@@ -652,11 +652,11 @@ describe('ctrly()', () => {
 
             assertClosed(control, target);
 
-            simulant.fire(control, 'keypress', {which: 32, button: 0});
+            simulant.fire(control, 'keydown', {which: 32, button: 0});
 
             assertOpen(control, target);
 
-            simulant.fire(control, 'keypress', {which: 13, button: 0});
+            simulant.fire(control, 'keydown', {which: 13, button: 0});
 
             assertClosed(control, target);
 

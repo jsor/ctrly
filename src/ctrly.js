@@ -369,7 +369,7 @@ export default function ctrly(opts = {}) {
     }
 
     let removeControlClick;
-    let removeControlKeypress;
+    let removeControlKeydown;
 
     function init() {
         if (!removeControlClick) {
@@ -379,7 +379,7 @@ export default function ctrly(opts = {}) {
                 }
             });
 
-            removeControlKeypress = delegate(document, 'keypress', controlSelector, (e, control) => {
+            removeControlKeydown = delegate(document, 'keydown', controlSelector, (e, control) => {
                 if (
                     keyCode(e) === 13 /* Enter */ ||
                     keyCode(e) === 32 /* Space */
@@ -448,8 +448,8 @@ export default function ctrly(opts = {}) {
         if (fullReset && removeControlClick) {
             removeControlClick();
             removeControlClick = null;
-            removeControlKeypress();
-            removeControlKeypress = null;
+            removeControlKeydown();
+            removeControlKeydown = null;
         }
 
         find(controlSelector).forEach(control => {
