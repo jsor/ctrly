@@ -1,20 +1,20 @@
 /*!
  * ctrly v0.7.0
- * Copyright (c) 2018-2019 Jan Sorgalla
+ * Copyright (c) 2018-2020 Jan Sorgalla
  * License: MIT
  */
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
     (global = global || self, global.ctrly = factory());
-}(this, function () { 'use strict';
+}(this, (function () { 'use strict';
 
     function activeElement() {
       try {
         var _document = document,
             _activeElement = _document.activeElement;
         return _activeElement && _activeElement.nodeName ? _activeElement : document.body;
-      } catch (e) {
+      } catch (_) {
         return document.body;
       }
     }
@@ -49,7 +49,7 @@
       }
       try {
         element.focus();
-      } catch (e) {
+      } catch (_) {
       }
       if (restorer) {
         restorer();
@@ -83,8 +83,7 @@
       return null;
     }
 
-    function find(selector, element) {
-      var context = arguments.length > 1 ? element : document;
+    function selectAll(context, selector) {
       if (!context || typeof context.querySelectorAll !== 'function') {
         return [];
       }
@@ -128,7 +127,7 @@
       if (!element.href || !mapName || map.nodeName.toLowerCase() !== 'map') {
         return false;
       }
-      var images = find("img[usemap=\"#".concat(mapName, "\"]"));
+      var images = selectAll(document, "img[usemap=\"#".concat(mapName, "\"]"));
       return images.length > 0 && visible(images[0]);
     }
     function visible(element) {
@@ -261,7 +260,7 @@
       var event;
       try {
         event = new CustomEvent(type, eventInit);
-      } catch (err) {
+      } catch (_) {
         event = document.createEvent('CustomEvent');
         event.initCustomEvent(type, eventInit.bubbles, eventInit.cancelable, eventInit.detail);
       }
@@ -283,8 +282,16 @@
       }));
     }
 
+    function find(selector, element) {
+      var context = arguments.length > 1 ? element : document;
+      if (!context || typeof context.querySelectorAll !== 'function') {
+        return [];
+      }
+      return [].slice.call(context.querySelectorAll(selector));
+    }
+
     function tabbable(element) {
-      return find(selector, arguments.length > 0 ? element : document).filter(tabbableFilter).sort(compare);
+      return selectAll(arguments.length > 0 ? element : document, selector).filter(tabbableFilter).sort(compare);
     }
 
     var defaultOptions = {
@@ -300,9 +307,9 @@
       on: null,
       autoInit: true
     };
-    function settings(opts) {
+    function settings(options) {
       var extended = {};
-      var args = [defaultOptions, opts];
+      var args = [defaultOptions, options];
       args.forEach(function (arg) {
         for (var prop in arg) {
           if (Object.prototype.hasOwnProperty.call(arg, prop)) {
@@ -312,8 +319,8 @@
       });
       return extended;
     }
-    function keyCode(e) {
-      return 'which' in e ? e.which : e.keyCode;
+    function keyCode(event) {
+      return 'which' in event ? event.which : event.keyCode;
     }
     function findControls(target) {
       return find("[aria-controls=\"".concat(target.id, "\"]"));
@@ -328,8 +335,8 @@
     }
     var idCounter = 0;
     function ctrly() {
-      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var options = settings(opts);
+      var instanceOptions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var options = settings(instanceOptions);
       var controlSelector = options.selector;
       var eventListener = options.on || {};
       var instances = {};
@@ -407,8 +414,8 @@
       function addEventListeners(control, target) {
         var removeFuncs = [];
         if (options.closeOnBlur && !options.trapFocus) {
-          removeFuncs.push(on(document, 'focusin', function (e) {
-            if (!target.contains(e.target)) {
+          removeFuncs.push(on(document, 'focusin', function (event) {
+            if (!target.contains(event.target)) {
               setTimeout(function () {
                 close(target, false);
               }, 0);
@@ -419,15 +426,15 @@
           }));
         }
         if (options.closeOnEsc) {
-          removeFuncs.push(on(document, 'keydown', function (e) {
-            if (keyCode(e) === 27 && close(target)) {
-              e.preventDefault();
+          removeFuncs.push(on(document, 'keydown', function (event) {
+            if (keyCode(event) === 27 && close(target)) {
+              event.preventDefault();
             }
           }));
         }
         if (options.closeOnOutsideClick) {
-          removeFuncs.push(on(document, 'click', function (e) {
-            if (keyCode(e) === 1 && !target.contains(e.target) && !closest(e.target, controlSelector)) {
+          removeFuncs.push(on(document, 'click', function (event) {
+            if (keyCode(event) === 1 && !target.contains(event.target) && !closest(event.target, controlSelector)) {
               close(target);
             }
           }, {
@@ -463,27 +470,27 @@
           }));
         }
         if (options.trapFocus) {
-          removeFuncs.push(on(document, 'keydown', function (e) {
-            if (keyCode(e) !== 9) {
+          removeFuncs.push(on(document, 'keydown', function (event) {
+            if (keyCode(event) !== 9) {
               return;
             }
             var tabbableElements = tabbable(target);
             if (!tabbableElements[0]) {
-              e.preventDefault();
+              event.preventDefault();
               focus(target);
               return;
             }
             var active = activeElement();
             var firstTabStop = tabbableElements[0];
             var lastTabStop = tabbableElements[tabbableElements.length - 1];
-            if (e.shiftKey && active === firstTabStop) {
-              e.preventDefault();
+            if (event.shiftKey && active === firstTabStop) {
+              event.preventDefault();
               focus(lastTabStop);
               return;
             }
-            if (!e.shiftKey && active === lastTabStop) {
+            if (!event.shiftKey && active === lastTabStop) {
               focus(firstTabStop);
-              e.preventDefault();
+              event.preventDefault();
             }
           }));
         }
@@ -521,17 +528,17 @@
         trigger(target, 'opened');
         return target;
       }
-      function toggle(e, control) {
+      function toggle(event, control) {
         var target = findTarget(control);
         if (!target) {
           if (close(findParentTarget(control))) {
-            e.preventDefault();
+            event.preventDefault();
           }
           return;
         }
         if (control.getAttribute('aria-expanded') === 'true') {
           if (close(target)) {
-            e.preventDefault();
+            event.preventDefault();
           }
           return;
         }
@@ -540,7 +547,7 @@
         }
         open(control);
         if (target) {
-          e.preventDefault();
+          event.preventDefault();
           if (options.focusTarget) {
             focus(tabbable(target)[0] || target);
           }
@@ -552,17 +559,17 @@
       var removeControlKeydown;
       function init() {
         if (!removeControlClick) {
-          removeControlClick = delegate(document, 'click', controlSelector, function (e, control) {
-            if (keyCode(e) === 1
+          removeControlClick = delegate(document, 'click', controlSelector, function (event, control) {
+            if (keyCode(event) === 1
             ) {
-                toggle(e, control);
+                toggle(event, control);
               }
           });
-          removeControlKeydown = delegate(document, 'keydown', controlSelector, function (e, control) {
-            if (keyCode(e) === 13
-            || keyCode(e) === 32
+          removeControlKeydown = delegate(document, 'keydown', controlSelector, function (event, control) {
+            if (keyCode(event) === 13
+            || keyCode(event) === 32
             ) {
-                toggle(e, control);
+                toggle(event, control);
               }
           });
         }
@@ -587,8 +594,8 @@
             }
             return control.id;
           });
-          var newLabelledBy = (target.getAttribute('aria-labelledby') || '').split(' ').concat(labelledBy).filter(function (id, pos, arr) {
-            return id !== '' && arr.indexOf(id) === pos;
+          var newLabelledBy = (target.getAttribute('aria-labelledby') || '').split(' ').concat(labelledBy).filter(function (id, position, array) {
+            return id !== '' && array.indexOf(id) === position;
           });
           target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
           if (control.getAttribute('aria-expanded') === 'true' || control.hasAttribute('data-ctrly-open')) {
@@ -647,4 +654,4 @@
 
     return ctrly;
 
-}));
+})));
