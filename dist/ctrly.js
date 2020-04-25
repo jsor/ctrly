@@ -282,14 +282,6 @@
       }));
     }
 
-    function find(selector, element) {
-      var context = arguments.length > 1 ? element : document;
-      if (!context || typeof context.querySelectorAll !== 'function') {
-        return [];
-      }
-      return [].slice.call(context.querySelectorAll(selector));
-    }
-
     function tabbable(element) {
       return selectAll(arguments.length > 0 ? element : document, selector).filter(tabbableFilter).sort(compare);
     }
@@ -323,7 +315,7 @@
       return 'which' in event ? event.which : event.keyCode;
     }
     function findControls(target) {
-      return find("[aria-controls=\"".concat(target.id, "\"]"));
+      return selectAll(document, "[aria-controls=\"".concat(target.id, "\"]"));
     }
     function findTarget(control) {
       return document.getElementById(control.getAttribute('aria-controls') || control.getAttribute('data-ctrly'));
@@ -404,7 +396,7 @@
         return target;
       }
       function closeOthers(target) {
-        find(controlSelector, context(target)).forEach(function (control) {
+        selectAll(context(target), controlSelector).forEach(function (control) {
           var other = findTarget(control);
           if (other && other.id !== target.id) {
             close(other, false);
@@ -573,7 +565,7 @@
               }
           });
         }
-        find(controlSelector).forEach(function (control) {
+        selectAll(document, controlSelector).forEach(function (control) {
           var target = findTarget(control);
           if (!target) {
             resetControl(control);
@@ -617,7 +609,7 @@
           removeControlKeydown();
           removeControlKeydown = null;
         }
-        find(controlSelector).forEach(function (control) {
+        selectAll(document, controlSelector).forEach(function (control) {
           if (fullReset) {
             resetControl(control);
           }

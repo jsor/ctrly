@@ -3,11 +3,11 @@ import {
     closest,
     delegate,
     dispatch,
-    find,
     focus,
     isTabbable,
     on,
     ready,
+    selectAll,
     tabbable
 } from 'domestique';
 
@@ -45,7 +45,7 @@ function keyCode(event) {
 }
 
 function findControls(target) {
-    return find(`[aria-controls="${target.id}"]`);
+    return selectAll(document, `[aria-controls="${target.id}"]`);
 }
 
 function findTarget(control) {
@@ -158,7 +158,7 @@ export default function ctrly(instanceOptions = {}) {
     }
 
     function closeOthers(target) {
-        find(controlSelector, context(target)).forEach(control => {
+        selectAll(context(target), controlSelector).forEach(control => {
             const other = findTarget(control);
 
             if (other && other.id !== target.id) {
@@ -389,7 +389,7 @@ export default function ctrly(instanceOptions = {}) {
             });
         }
 
-        find(controlSelector).forEach(control => {
+        selectAll(document, controlSelector).forEach(control => {
             const target = findTarget(control);
 
             if (!target) {
@@ -452,7 +452,7 @@ export default function ctrly(instanceOptions = {}) {
             removeControlKeydown = null;
         }
 
-        find(controlSelector).forEach(control => {
+        selectAll(document, controlSelector).forEach(control => {
             if (fullReset) {
                 resetControl(control);
             }
