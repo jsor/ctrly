@@ -7,18 +7,18 @@ import {assertOpen, assertClosed} from './helper';
 const focusableElementsSelector = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
 
 function addTabListener() {
-    return on(document, 'keydown', e => {
-        if (e.which === 9 && !e.defaultPrevented) {
+    return on(document, 'keydown', event => {
+        if (event.which === 9 && !event.defaultPrevented) {
             const focusableElements = find(focusableElementsSelector);
             const currentIndex = focusableElements.indexOf(document.activeElement);
 
-            if (e.shiftKey) {
+            if (event.shiftKey) {
                 focusableElements[currentIndex - 1].focus();
             } else {
                 focusableElements[currentIndex + 1].focus();
             }
 
-            e.preventDefault();
+            event.preventDefault();
         }
     });
 }

@@ -218,9 +218,9 @@ describe('ctrly()', () => {
         ready(() => {
             assertClosed(control, target);
 
-            target.addEventListener('ctrly:open', e => {
-                assert.property(e, 'target');
-                assert.equal(e.target, target);
+            target.addEventListener('ctrly:open', event => {
+                assert.property(event, 'target');
+                assert.equal(event.target, target);
 
                 done();
             });
@@ -239,8 +239,8 @@ describe('ctrly()', () => {
         ready(() => {
             assertClosed(control, target);
 
-            target.addEventListener('ctrly:open', e => {
-                e.preventDefault();
+            target.addEventListener('ctrly:open', event => {
+                event.preventDefault();
             });
 
             simulant.fire(control, 'click', {which: 1, button: 0});
@@ -283,9 +283,9 @@ describe('ctrly()', () => {
         ready(() => {
             assertClosed(control, target);
 
-            target.addEventListener('ctrly:opened', e => {
-                assert.property(e, 'target');
-                assert.equal(e.target, target);
+            target.addEventListener('ctrly:opened', event => {
+                assert.property(event, 'target');
+                assert.equal(event.target, target);
 
                 done();
             });
@@ -355,9 +355,9 @@ describe('ctrly()', () => {
         ready(() => {
             assertClosed(control, target);
 
-            target.addEventListener('ctrly:close', e => {
-                assert.property(e, 'target');
-                assert.equal(e.target, target);
+            target.addEventListener('ctrly:close', event => {
+                assert.property(event, 'target');
+                assert.equal(event.target, target);
 
                 done();
             });
@@ -377,8 +377,8 @@ describe('ctrly()', () => {
         ready(() => {
             assertClosed(control, target);
 
-            target.addEventListener('ctrly:close', e => {
-                e.preventDefault();
+            target.addEventListener('ctrly:close', event => {
+                event.preventDefault();
             });
 
             simulant.fire(control, 'click', {which: 1, button: 0});
@@ -426,9 +426,9 @@ describe('ctrly()', () => {
         ready(() => {
             assertClosed(control, target);
 
-            target.addEventListener('ctrly:closed', e => {
-                assert.property(e, 'target');
-                assert.equal(e.target, target);
+            target.addEventListener('ctrly:closed', event => {
+                assert.property(event, 'target');
+                assert.equal(event.target, target);
 
                 done();
             });

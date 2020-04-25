@@ -25,9 +25,9 @@ const defaultOptions = {
     autoInit: true
 };
 
-function settings(opts) {
+function settings(options) {
     const extended = {};
-    const args = [defaultOptions, opts];
+    const args = [defaultOptions, options];
 
     args.forEach(arg => {
         for (const prop in arg) {
@@ -40,8 +40,8 @@ function settings(opts) {
     return extended;
 }
 
-function keyCode(e) {
-    return 'which' in e ? e.which : e.keyCode;
+function keyCode(event) {
+    return 'which' in event ? event.which : event.keyCode;
 }
 
 function findControls(target) {
@@ -62,8 +62,8 @@ function resetControl(control) {
 
 let idCounter = 0;
 
-export default function ctrly(opts = {}) {
-    const options = settings(opts);
+export default function ctrly(instanceOptions = {}) {
+    const options = settings(instanceOptions);
 
     const controlSelector = options.selector;
     const eventListener = options.on || {};
@@ -172,8 +172,8 @@ export default function ctrly(opts = {}) {
 
         if (options.closeOnBlur && !options.trapFocus) {
             removeFuncs.push(
-                on(document, 'focusin', e => {
-                    if (!target.contains(e.target)) {
+                on(document, 'focusin', event => {
+                    if (!target.contains(event.target)) {
                         // Delay closing target since the "focusin" event is
                         // triggered before the control click handlers.
                         // If focus is shifted to a control by clicking on it,
@@ -188,9 +188,9 @@ export default function ctrly(opts = {}) {
 
         if (options.closeOnEsc) {
             removeFuncs.push(
-                on(document, 'keydown', e => {
-                    if (keyCode(e) === 27 && close(target)) {
-                        e.preventDefault();
+                on(document, 'keydown', event => {
+                    if (keyCode(event) === 27 && close(target)) {
+                        event.preventDefault();
                     }
                 })
             );
@@ -198,15 +198,15 @@ export default function ctrly(opts = {}) {
 
         if (options.closeOnOutsideClick) {
             removeFuncs.push(
-                on(document, 'click', e => {
+                on(document, 'click', event => {
                     // Close only after click on document
                     // - if it's a left button mouse click
                     // - if currently not interacting with the target
                     // - if the click did not originated from (within) a control
                     if (
-                        keyCode(e) === 1 &&
-                        !target.contains(e.target) &&
-                        !closest(e.target, controlSelector)
+                        keyCode(event) === 1 &&
+                        !target.contains(event.target) &&
+                        !closest(event.target, controlSelector)
                     ) {
                         close(target);
                     }
@@ -249,15 +249,15 @@ export default function ctrly(opts = {}) {
 
         if (options.trapFocus) {
             removeFuncs.push(
-                on(document, 'keydown', e => {
-                    if (keyCode(e) !== 9) {
+                on(document, 'keydown', event => {
+                    if (keyCode(event) !== 9) {
                         return;
                     }
 
                     const tabbableElements = tabbable(target);
 
                     if (!tabbableElements[0]) {
-                        e.preventDefault();
+                        event.preventDefault();
                         focus(target);
                         return;
                     }
@@ -266,15 +266,15 @@ export default function ctrly(opts = {}) {
                     const firstTabStop = tabbableElements[0];
                     const lastTabStop = tabbableElements[tabbableElements.length - 1];
 
-                    if (e.shiftKey && active === firstTabStop) {
-                        e.preventDefault();
+                    if (event.shiftKey && active === firstTabStop) {
+                        event.preventDefault();
                         focus(lastTabStop);
                         return;
                     }
 
-                    if (!e.shiftKey && active === lastTabStop) {
+                    if (!event.shiftKey && active === lastTabStop) {
                         focus(firstTabStop);
-                        e.preventDefault();
+                        event.preventDefault();
                     }
                 })
             );
@@ -326,14 +326,14 @@ export default function ctrly(opts = {}) {
         return target;
     }
 
-    function toggle(e, control) {
+    function toggle(event, control) {
         const target = findTarget(control);
 
         if (!target) {
             // Allow controls without a value for data-ctrly
             // to close a target if it's a child element
             if (close(findParentTarget(control))) {
-                e.preventDefault();
+                event.preventDefault();
             }
 
             return;
@@ -341,7 +341,7 @@ export default function ctrly(opts = {}) {
 
         if (control.getAttribute('aria-expanded') === 'true') {
             if (close(target)) {
-                e.preventDefault();
+                event.preventDefault();
             }
 
             return;
@@ -354,7 +354,7 @@ export default function ctrly(opts = {}) {
         open(control);
 
         if (target) {
-            e.preventDefault();
+            event.preventDefault();
 
             if (options.focusTarget) {
                 focus(
@@ -373,18 +373,18 @@ export default function ctrly(opts = {}) {
 
     function init() {
         if (!removeControlClick) {
-            removeControlClick = delegate(document, 'click', controlSelector, (e, control) => {
-                if (keyCode(e) === 1 /* Left mouse button */) {
-                    toggle(e, control);
+            removeControlClick = delegate(document, 'click', controlSelector, (event, control) => {
+                if (keyCode(event) === 1 /* Left mouse button */) {
+                    toggle(event, control);
                 }
             });
 
-            removeControlKeydown = delegate(document, 'keydown', controlSelector, (e, control) => {
+            removeControlKeydown = delegate(document, 'keydown', controlSelector, (event, control) => {
                 if (
-                    keyCode(e) === 13 /* Enter */ ||
-                    keyCode(e) === 32 /* Space */
+                    keyCode(event) === 13 /* Enter */ ||
+                    keyCode(event) === 32 /* Space */
                 ) {
-                    toggle(e, control);
+                    toggle(event, control);
                 }
             });
         }
@@ -420,8 +420,8 @@ export default function ctrly(opts = {}) {
             const newLabelledBy = (target.getAttribute('aria-labelledby') || '')
                 .split(' ')
                 .concat(labelledBy)
-                .filter((id, pos, arr) => {
-                    return id !== '' && arr.indexOf(id) === pos;
+                .filter((id, position, array) => {
+                    return id !== '' && array.indexOf(id) === position;
                 });
 
             target.setAttribute('aria-labelledby', newLabelledBy.join(' '));
