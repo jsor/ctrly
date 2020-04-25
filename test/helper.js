@@ -26,7 +26,7 @@ export function triggerCompatFocusEvent(type, target) {
     // https://github.com/markelog/jquery/blob/master/test/unit/event.js#L2629
     if (
         /firefox/i.test(window.navigator.userAgent) ||
-        /Opera|OPR\//i.test(window.navigator.userAgent)
+        /opera|opr\//i.test(window.navigator.userAgent)
     ) {
         target.dispatchEvent(new FocusEvent(type));
     }
