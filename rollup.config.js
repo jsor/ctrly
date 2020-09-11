@@ -25,7 +25,7 @@ const cleanupPlugin = cleanup({
     comments: 'some'
 });
 
-export default [
+const config = [
     {
         input: 'src/ctrly.js',
         output: {
@@ -76,3 +76,5 @@ export default [
         ]
     }
 ];
+
+export default config;
