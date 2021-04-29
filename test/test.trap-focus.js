@@ -1,8 +1,8 @@
 import simulant from 'simulant';
 import {find, on, ready} from 'domestique';
-import ctrly from '../src/ctrly';
-import {fixtureDefault} from './fixture';
-import {assertOpen, assertClosed} from './helper';
+import ctrly from '../src/ctrly.js';
+import {fixtureDefault} from './fixture.js';
+import {assertOpen, assertClosed} from './helper.js';
 
 const focusableElementsSelector = 'a[href],area[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled]),iframe,object,embed,[contenteditable],[tabindex]:not([tabindex^="-"])';
 

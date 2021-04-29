@@ -1,6 +1,6 @@
 import clean from 'rollup-plugin-clean';
-import resolve from 'rollup-plugin-node-resolve';
-import babel from 'rollup-plugin-babel';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
+import {babel} from '@rollup/plugin-babel';
 import cleanup from 'rollup-plugin-cleanup';
 import {terser} from 'rollup-plugin-terser';
 
@@ -16,9 +16,10 @@ const banner = () => {
 };
 
 const cleanPlugin = clean();
-const resolvePlugin = resolve();
+const resolvePlugin = nodeResolve();
 const babelPlugin = babel({
     babelrc: false,
+    babelHelpers: 'bundled',
     presets: [['@babel/preset-env', {modules: false}]]
 });
 const cleanupPlugin = cleanup({

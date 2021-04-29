@@ -79,10 +79,11 @@ export default function ctrly(instanceOptions = {}) {
     }
 
     function trigger(target, event) {
-        if (typeof eventListener[event] === 'function') {
-            if (eventListener[event](target) === false) {
-                return false;
-            }
+        if (
+            typeof eventListener[event] === 'function' &&
+            eventListener[event](target) === false
+        ) {
+            return false;
         }
 
         return dispatch(target, `ctrly:${event}`, {
@@ -226,19 +227,10 @@ export default function ctrly(instanceOptions = {}) {
             };
 
             removeFuncs.push(
-                on(target, 'mouseenter', activate, {passive: true})
-            );
-            removeFuncs.push(
-                on(target, 'mouseleave', deactivate, {passive: true})
-            );
-            removeFuncs.push(
-                on(target, 'touchstart', activate, {passive: true})
-            );
-            removeFuncs.push(
-                on(target, 'touchend', deactivate, {passive: true})
-            );
-
-            removeFuncs.push(
+                on(target, 'mouseenter', activate, {passive: true}),
+                on(target, 'mouseleave', deactivate, {passive: true}),
+                on(target, 'touchstart', activate, {passive: true}),
+                on(target, 'touchend', deactivate, {passive: true}),
                 on(window, 'scroll', () => {
                     if (!active) {
                         close(target);
@@ -281,7 +273,7 @@ export default function ctrly(instanceOptions = {}) {
         }
 
         return () => {
-            while (removeFuncs.length) {
+            while (removeFuncs.length > 0) {
                 removeFuncs.shift().call();
             }
         };

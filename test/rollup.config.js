@@ -1,6 +1,6 @@
-const resolve = require('rollup-plugin-node-resolve');
-const babel = require('rollup-plugin-babel');
-const commonjs = require('rollup-plugin-commonjs');
+const nodeResolve = require('@rollup/plugin-node-resolve');
+const babel = require('@rollup/plugin-babel');
+const commonjs = require('@rollup/plugin-commonjs');
 const istanbul = require('rollup-plugin-istanbul');
 
 module.exports = {
@@ -8,13 +8,14 @@ module.exports = {
         format: 'iife'
     },
     plugins: [
-        resolve(),
+        nodeResolve.nodeResolve(),
         commonjs(),
         istanbul({
             exclude: ['test/*.js', 'node_modules/**/*']
         }),
-        babel({
+        babel.babel({
             babelrc: false,
+            babelHelpers: 'bundled',
             presets: [['@babel/preset-env', {modules: false}]]
         })
     ]

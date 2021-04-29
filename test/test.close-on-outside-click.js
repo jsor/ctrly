@@ -1,8 +1,8 @@
 import simulant from 'simulant';
 import {ready} from 'domestique';
-import ctrly from '../src/ctrly';
-import {fixtureDefault} from './fixture';
-import {assertOpen, assertClosed} from './helper';
+import ctrly from '../src/ctrly.js';
+import {fixtureDefault} from './fixture.js';
+import {assertOpen, assertClosed} from './helper.js';
 
 describe('ctrly(closeOnOutsideClick)', () => {
     let fixture;

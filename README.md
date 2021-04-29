@@ -19,7 +19,7 @@ and similar UI elements. Example implementations can be found in the
 
 **Demos**: [**Accordion**](https://sorgalla.com/ctrly/examples/accordion/) • [**Dropdown**](https://sorgalla.com/ctrly/examples/dropdown/) • [**Offcanvas**](https://sorgalla.com/ctrly/examples/offcanvas/)
 
-Minified and gzipped, the total footprint weights about 2.8kB.
+Minified and gzipped, the total footprint weights about 3kB.
 
 Installation
 ------------

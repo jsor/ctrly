@@ -1,8 +1,8 @@
 import simulant from 'simulant';
 import {ready} from 'domestique';
-import ctrly from '../src/ctrly';
-import {fixtureMultiple} from './fixture';
-import {assertOpen, assertClosed} from './helper';
+import ctrly from '../src/ctrly.js';
+import {fixtureMultiple} from './fixture.js';
+import {assertOpen, assertClosed} from './helper.js';
 
 describe('ctrly(context)', () => {
     let fixture;

@@ -1,6 +1,6 @@
 /*!
  * ctrly v0.7.0
- * Copyright (c) 2018-2020 Jan Sorgalla
+ * Copyright (c) 2018-2021 Jan Sorgalla
  * License: MIT
  */
 function activeElement() {
@@ -333,10 +333,8 @@ function ctrly() {
     return closest(control, options.context);
   }
   function trigger(target, event) {
-    if (typeof eventListener[event] === 'function') {
-      if (eventListener[event](target) === false) {
-        return false;
-      }
+    if (typeof eventListener[event] === 'function' && eventListener[event](target) === false) {
+      return false;
     }
     return dispatch(target, "ctrly:".concat(event), {
       bubbles: true,
@@ -437,17 +435,13 @@ function ctrly() {
       };
       removeFuncs.push(on(target, 'mouseenter', activate, {
         passive: true
-      }));
-      removeFuncs.push(on(target, 'mouseleave', deactivate, {
+      }), on(target, 'mouseleave', deactivate, {
         passive: true
-      }));
-      removeFuncs.push(on(target, 'touchstart', activate, {
+      }), on(target, 'touchstart', activate, {
         passive: true
-      }));
-      removeFuncs.push(on(target, 'touchend', deactivate, {
+      }), on(target, 'touchend', deactivate, {
         passive: true
-      }));
-      removeFuncs.push(on(window, 'scroll', function () {
+      }), on(window, 'scroll', function () {
         if (!active) {
           close(target);
         }
@@ -481,7 +475,7 @@ function ctrly() {
       }));
     }
     return function () {
-      while (removeFuncs.length) {
+      while (removeFuncs.length > 0) {
         removeFuncs.shift().call();
       }
     };

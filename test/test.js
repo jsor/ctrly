@@ -1,6 +1,6 @@
 import simulant from 'simulant';
 import {ready} from 'domestique';
-import ctrly from '../src/ctrly';
+import ctrly from '../src/ctrly.js';
 import {
     fixtureDefault,
     fixtureExpanded,
@@ -9,8 +9,8 @@ import {
     fixtureMissingAriaControls,
     fixtureMissingAriaControlsExpanded,
     fixtureNonButton
-} from './fixture';
-import {assertOpen, assertClosed, assertUninitialized} from './helper';
+} from './fixture.js';
+import {assertOpen, assertClosed, assertUninitialized} from './helper.js';
 
 describe('ctrly()', () => {
     let fixture;
