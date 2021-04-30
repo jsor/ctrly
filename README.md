@@ -3,7 +3,7 @@ ctrly
 
 Lightweight and dependency-free content toggling with a focus on accessibility.
 
-[![Build Status](https://travis-ci.com/jsor/ctrly.svg?branch=master)](https://travis-ci.com/jsor/ctrly)
+[![Build Status](https://travis-ci.com/jsor/ctrly.svg?branch=main)](https://travis-ci.com/jsor/ctrly)
 [![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=eDB3b094Y0Jab1dMSnd0M21raWlNUjZzRlZaejlsaEl5T3JEMzFEOWlwUT0tLXVaQmRpdnFOdEp3b3pKY0FlOXpublE9PQ==--d12075170dfb6c636bfd8810bc079a8f9f192803)](https://www.browserstack.com/automate/public-build/eDB3b094Y0Jab1dMSnd0M21raWlNUjZzRlZaejlsaEl5T3JEMzFEOWlwUT0tLXVaQmRpdnFOdEp3b3pKY0FlOXpublE9PQ==--d12075170dfb6c636bfd8810bc079a8f9f192803)
 
 About
