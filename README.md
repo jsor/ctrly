@@ -4,7 +4,8 @@ ctrly
 Lightweight and dependency-free content toggling with a focus on accessibility.
 
 [![Build Status](https://travis-ci.com/jsor/ctrly.svg?branch=main)](https://travis-ci.com/jsor/ctrly)
-[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=eDB3b094Y0Jab1dMSnd0M21raWlNUjZzRlZaejlsaEl5T3JEMzFEOWlwUT0tLXVaQmRpdnFOdEp3b3pKY0FlOXpublE9PQ==--d12075170dfb6c636bfd8810bc079a8f9f192803)](https://www.browserstack.com/automate/public-build/eDB3b094Y0Jab1dMSnd0M21raWlNUjZzRlZaejlsaEl5T3JEMzFEOWlwUT0tLXVaQmRpdnFOdEp3b3pKY0FlOXpublE9PQ==--d12075170dfb6c636bfd8810bc079a8f9f192803)
+[![BrowserStack Status](https://automate.browserstack.com/badge.svg?badge_key=ODRaY1N5SUhNOXNmZXVoVUJDTytSVE1tdHo1aWxzaENwOFdjVk93VDNPVT0tLXVMNXN0SFBQOFNjUk5kTHl2dmo1NGc9PQ==--3a2198d90bb0b3c048e5beec9217e50a40da2095)](https://automate.browserstack.com/public-build/ODRaY1N5SUhNOXNmZXVoVUJDTytSVE1tdHo1aWxzaENwOFdjVk93VDNPVT0tLXVMNXN0SFBQOFNjUk5kTHl2dmo1NGc9PQ==--3a2198d90bb0b3c048e5beec9217e50a40da2095)
+
 
 About
 -----
